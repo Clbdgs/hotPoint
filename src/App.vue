@@ -1,22 +1,42 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="left-side">
+        <div v-for="(menu,index) in menus" :key="index">
+            <ul>
+                <li><router-link :to="menu.enName">{{menu.cnName}}</router-link></li>
+            </ul>
+        </div>
+    </div>
+    <div class="right-side">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+    data(){
+        return{
+              menus:[{
+                cnName:"导航",
+                enName:"/guide"
+            },
+            {
+                cnName:"学科",
+                enName:"/subject"
+            }]
+        }
+    },
+    created(){
+    }
 }
 </script>
-
-<style>
+<style lang="scss">
+ul li{
+  list-style: none;
+}
+a{
+  text-decoration: none;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -24,5 +44,17 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  .left-side{
+    width:20%;
+    float:left;
+    background-color:pink;
+    li{
+      margin-bottom: 20px;
+    }
+  }
+  .right-side{
+    width:80%;
+    float:left;
+  }
 }
 </style>
