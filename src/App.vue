@@ -1,13 +1,13 @@
 <template>
-  <div id="app">
-    <div class="left-side">
+  <div id="app" class="row container-fluid">
+    <div class="col-2 left-side">
         <div v-for="(menu,index) in menus" :key="index">
             <ul>
                 <li><router-link :to="menu.enName">{{menu.cnName}}</router-link></li>
             </ul>
         </div>
     </div>
-    <div class="right-side">
+    <div class="col-8 right-side ms-5">
       <router-view></router-view>
     </div>
   </div>
@@ -45,16 +45,12 @@ a{
   color: #2c3e50;
   margin-top: 60px;
   .left-side{
-    width:20%;
-    float:left;
     background-color:pink;
     li{
       margin-bottom: 20px;
     }
   }
   .right-side{
-    width:80%;
-    float:left;
   }
 }
 </style>

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../components/home'
 import subject from '../components/subject'
 import manage from '../components/manage'
+import fileDetail from '../components/fileDetail'
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,6 +21,11 @@ const routes = [
         path:'/subject',
         name: 'subject',
         component: subject
+    },
+    {
+        path:'/fileDetail',
+        name:'fileDetail',
+        component:fileDetail
     },
     {
         path:'/manage',

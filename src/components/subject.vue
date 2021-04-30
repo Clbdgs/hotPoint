@@ -1,6 +1,6 @@
 <template>
     <div class="subject-page">
-        <div class="breadcrumbs">
+        <div class="breadcrumbs mb-4">
             <ul class="nav nav-pills flex-column flex-sm-row">    
                 <template v-for="subject in subjects">
                     <li class="nav-item" :key='subject.name' @click="handleSelectTopic(subject.name)">
@@ -10,14 +10,14 @@
             </ul>
         </div>
         <div class="webSite">
-            <div class="row">
-                <template v-for="file in files">
-                    <div class="col" :key="file.name">
-                        <div class="card text-start text-dark bg-light mb-10" style="max-width: 18rem;" >
+            <div class="row row-cols-1 row-cols-md-3">
+                <template v-for="file,index in files">
+                    <div class="col me-4" :key="file.name">
+                        <div ref="cardRef" class="card text-start" style="max-width: 18rem;" @mouseenter="handleCardShadow(index)" @mouseleave="handleCardShadow(index,false)">
                             <div class="card-body">
-                                <h5 class="card-title">系统集成项目管理工程师资料包</h5>
+                                <h5 class="card-title">{{file.name}}</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a class="btn btn-primary" @click="handleToDetail(file.name)">详情</a>
                             </div>
                         </div>
                     </div>
@@ -53,6 +53,17 @@ export default {
                 this.files = res.data.files
                 console.log('files',this.files)
             })
+        },
+        handleToDetail(name){
+            this.$router.push({name:'fileDetail',params:{name:name}})
+        },
+        handleCardShadow(index,bool=true){
+            let cardEl = this.$refs.cardRef[index]
+            if(bool){
+                cardEl.classList.add("shadow")
+                return
+            }
+            cardEl.classList.remove("shadow")
         }
     }
 }
@@ -60,6 +71,9 @@ export default {
 
 <style lang="scss" scoped>
 .subject-page{
+    .nav-link{
+        color:#333;
+    }
     .breadcrumbs{
         // height:50px;
         li{ 
