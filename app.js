@@ -13,6 +13,7 @@ const  fs = require('fs');
 // let session = require('koa-session');
 const  cors = require('koa-cors');
 const koaBody  = require('koa-body');
+const koaJson2xlsx = require('koa-json2xlsx');
 
 // const logger = require('koa-logger');
 const staticFiles  = require('koa-static');
@@ -28,8 +29,7 @@ app.use(koaBody({
         multipart: true // 是否支持 multipart-formdate 的表单
     }   
 }));
-
-
+app.use(koaJson2xlsx());
 app.use(UploadRoute);
 app.use(topicRoute);
 
@@ -48,6 +48,6 @@ app.use(staticFiles('public'));
 app.use(ctx => {
     ctx.body = `Request Body: ${JSON.stringify(ctx.request.body)}`;
 });
-app.listen(3000,function(error){
-    console.log("server is start , localhost:3000")
+app.listen(4999,function(error){
+    console.log("server is start , localhost:4999")
 });

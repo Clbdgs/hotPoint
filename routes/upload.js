@@ -11,6 +11,10 @@ const router = new Router()
 
 router.post('/upload',File.add)
 
+router.post('/addXlsx',File.addXlsx)
+
+router.get('/getXlsx',File.getXlsx)
+
 router.get('/files',File.get)
 
 router.get('/static/upload/:name',File.downLoad)
