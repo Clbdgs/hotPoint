@@ -9,8 +9,9 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link active" aria-current="page" href="#">首页</a>
+              <a class="nav-link" href="#" ><router-link to="/"> 首页</router-link></a>
               <a class="nav-link" href="#" ><router-link to="/subject"> 资料</router-link></a>
+              <a class="nav-link" href="#" ><router-link to="/manage"> 管理</router-link></a>
             </div>
           </div>
         </div>
@@ -59,7 +60,8 @@ export default {
             {
                 cnName:"学科",
                 enName:"/subject"
-            }]
+            },
+          ]
         }
     },
     created(){
@@ -82,7 +84,6 @@ ul li{
   color: #2c3e50;
   a{
     text-decoration: none;
-    color:#fff;
   }
 }
 .header-container{
@@ -94,6 +95,10 @@ ul li{
     top: 15px;
     border: 0;
     background-color: transparent;
+  }
+
+  a {
+    color: #fff;
   }
 }
 .main-contanier{
