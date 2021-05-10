@@ -14,8 +14,26 @@
               <a class="nav-link" href="#" ><router-link to="/manage"> 管理</router-link></a>
             </div>
           </div>
+          <button @click="isHiddenDialog=true">登录</button>
         </div>
-        
+        <div v-if="isHiddenDialog" class="dialog-wrapper">
+          <span class="delete-btn" @click="isHiddenDialog=false">x</span>
+          <span class="back-btn" v-if='isRegister' @click="isRegister=false">返回</span>
+          <div class="d-flex justify-content-center mb-2" style="color: #fff;">{{isRegister? "注册账号" : "密码登录"}}</div>
+          <div class="item">
+            <input v-if="!isRegister" type="email" maxlength="40" placeholder="请输入账号/邮箱">
+            <input v-else type="email" maxlength="40" placeholder="请输入邮箱">
+          </div>
+          <div class="item"> 
+            <input type="password" placeholder="请输入密码">
+          </div>
+          <div v-if="!isRegister" class="register mt-2" @click="handlRegister">
+            <span>注册账号</span>
+          </div>
+          <div class="d-grid gap-2 mt-3">
+            <button class="dbtn btn-secondary" type="button" > 登陆</button>
+          </div>
+        </div>
         <!-- <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <span class="input-group-text" @click="handleSearch">
@@ -53,7 +71,7 @@
 export default {
     data(){
         return{
-              menus:[{
+            menus:[{
                 cnName:"导航",
                 enName:"/guide"
             },
@@ -61,13 +79,16 @@ export default {
                 cnName:"学科",
                 enName:"/subject"
             },
-          ]
+          ],
+          isRegister:false,
+          isHiddenDialog:false
         }
     },
     created(){
     },
     methods:{
-      handleSearch(){
+      handlRegister(){
+        this.isRegister = true
       }
     }
 }
@@ -101,6 +122,63 @@ ul li{
     color: #fff;
   }
 }
+.dialog-wrapper{
+  position: fixed;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left:50%;
+  z-index: 99999999;
+  height: 300px;
+  width: 300px;
+  padding:50px 50px;
+  background-color: #2A2A32!important;
+  border-radius: 4px;
+  .back-btn{
+    position: absolute;
+    top:49px;
+    left:20px;
+    color:#fff;
+    cursor: pointer;
+    &:hover{
+      color:#00CC4C;
+    }
+  }
+  .delete-btn{
+    position: absolute;
+    top:20px;
+    right:20px;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+  }
+  .item{
+    border-bottom: 1px solid #d8d8d8;
+  }
+  .register{
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    &:hover{
+      color:#00CC4C;
+    }
+  }
+  input {
+    width: 100%;
+    border:none;
+    outline: none;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    color: #fff;
+    background: transparent;
+
+  }
+  input:focus-visible
+  { 
+    border:none;
+  }
+}
+
 .main-contanier{
   padding: 0 120px;
   min-height: 500px;
