@@ -24,6 +24,10 @@
             <input v-if="!isRegister" type="email" maxlength="40" placeholder="请输入账号/邮箱">
             <input v-else type="email" maxlength="40" placeholder="请输入邮箱">
           </div>
+          <!-- <div class="item"> 
+            <input type="password" placeholder="请输入验证码">
+            <button class="" style="display: inline-block;position: absolute;right: 20px;" @click="getVertifyCode">验证码</button>
+          </div> -->
           <div class="item"> 
             <input type="password" placeholder="请输入密码">
           </div>
@@ -89,6 +93,11 @@ export default {
     methods:{
       handlRegister(){
         this.isRegister = true
+      },
+      getVertifyCode(){
+        this.$http.post('http://localhost:3000/sendEmail').then(res=>{
+          console.log(res)
+        })
       }
     }
 }

@@ -19,11 +19,11 @@
                       <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">卡片</button>
                     </li> -->
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">包</button>
+                      <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">包</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade  mt-4" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="mt-4" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="row row-cols-1 row-cols-md-4">
                             <template v-for="file,index in files">
                                 <div class="col me-4 mb-4" :key="file.name">
@@ -70,7 +70,7 @@
                 this.subjectActive = name
             },
             getFiles() {
-                this.$http.get('http://localhost:4999/files').then(res => {
+                this.$http.get('http://localhost:3000/files').then(res => {
                     this.files = res.data.files
                 })
             },
