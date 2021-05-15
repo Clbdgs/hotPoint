@@ -24,13 +24,15 @@
     "koa-router": "^10.0.0",
     "koa-send": "^5.0.1",
     "koa-static": "^5.0.0",
+    "mavon-editor": "^2.9.1",
     "mysql2": "^2.2.5",
     "node-sass": "^4.14.1",
     "node-xlsx": "^0.16.1",
     "sass-loader": "^8.0.0",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.4",
-    "vue-router": "^3.5.1"
+    "vue-router": "^3.5.1",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.0",

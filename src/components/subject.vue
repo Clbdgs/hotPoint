@@ -1,47 +1,35 @@
 <template>
-    <div class="subject-page">
-        <nav class="resource-nav">
-            <ul>
-                <li>英语</li>
-                <li>
-                    计算机科学
-                    <span>网络信息安全</span>
-                    <span>信息系统集成项目管理工程师</span>
-                </li>
-                <li>设计</li>
-                <li>建筑</li>
-            </ul>
-        </nav>
-        <main class="main">
-            <section>
-                <ul class="nav nav-pills mt-4" id="myTab" role="tablist">
-                    <!-- <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">卡片</button>
-                    </li> -->
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">包</button>
+    <div class="subject-page mt-4">
+        <div class="d-flex justify-content-center search mb-4">
+            <input class="me-2 " placeholder="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>            
+        </div>
+        <main class="row">
+            <nav class="resource-nav col-sm-2">
+                <ul>
+                    <li>英语</li>
+                    <li>
+                        计算机科学
                     </li>
+                    <li>设计</li>
+                    <li>建筑</li>
                 </ul>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade  mt-4" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="row row-cols-1 row-cols-md-4">
-                            <template v-for="file,index in files">
-                                <div class="col me-4 mb-4" :key="file.name">
-                                    <div ref="cardRef" class="card text-start" style="max-width: 18rem;"
-                                        @mouseenter="handleCardShadow(index)" @mouseleave="handleCardShadow(index,false)">
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{file.name}}</h5>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the
-                                                bulk of the card's content.</p>
-                                            <a class="btn btn-primary" @click="handleToDetail(file)">详情</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
+            </nav>
+            <div class="col-8 row">
+                 <template v-for="file,index in files">
+                    <div class="mb-4 col-sm-4" :key="file.name">
+                        <div ref="cardRef" class="card text-start w-100 h-100"
+                            @mouseenter="handleCardShadow(index)" @mouseleave="handleCardShadow(index,false)">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">{{file.name}}</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the
+                                    bulk of the card's content.</p>
+                                <a class="btn btn-primary btn-sm mt-2" @click="handleToDetail(file)">详情</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </template>
+            </div>
         </main>
     </div>
 </template>
@@ -78,8 +66,7 @@
                 this.$router.push({
                     name: 'fileDetail',
                     params: {
-                        name: file.name,
-                        url: file.URL
+                        file: file
                     }
                 })
             },
@@ -96,27 +83,51 @@
 </script>
 
 <style lang="scss" scoped>
-    .subject-page {
-        .nav-link {
-            color: #333;
+*{
+  margin:0;
+  padding:0;
+}   
+.subject-page {
+    .nav-link {
+        color: #333;
+    }
+    .search{
+        background-color: #fff;
+        height: 48px;
+        font-size: 18px;
+        margin: 9px;
+        input{
+            padding-left:10px;
+            border-radius: 4px;
+            border: 1px solid #d4d4d5;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            &::focus-visible{
+                border: none;
+            }
         }
-        .resource-nav{
-            float: left;
-            margin-left: -100px;
-            margin-right: 30px;
-            border-left: 2px solid blue;
-            ul {
-                padding:0 20px;
-                li{
-                    span{
-                        margin-left: 20px;
-                        display: block;
-                    }
+    }
+    .resource-nav{
+        border-left: 1px solid #eee;
+        height:100%;
+        ul {
+            li{
+                &:hover{
+                    border-left: 2px solid blue;
                 }
             }
         }
-        .breadcrumbs {
-            height: 50px;
-        }
     }
+    .breadcrumbs {
+        height: 50px;
+    }
+    .card-title{
+        font-size:16px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .card-body{
+        font-size:12px;
+    }
+}
 </style>

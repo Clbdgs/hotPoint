@@ -12,8 +12,8 @@
         </div>
         <div class="row banner-section bg">
             <div class="col-2"><img src="../assets/logo.png" alt=""></div>
-            <div class="col-8 d-flex flex-column">
-                <div class="p-2 bd-highlight">信息系统项目管理工程师</div>
+            <div class="col-8 d-flex flex-column ms-4">
+                <div class="p-2 bd-highlight">{{file.name}}</div>
                 <div class="p-2"><span class="text-dark">10000</span>下载</div>
                 <div class="p-2">
                     <span class="btn-success btn-cus" @click="handleOpenTemplate">下载</span>
@@ -24,7 +24,7 @@
             <div class="focus">
                 <template v-for="btn,index in Btns">
                     <button ref="btnRef" :key="btn.name" :class="{active:btn.id==activeIndex}"
-                        @click="activeIndex=index"><span>{{btn.name}}</span></button>
+                        @click="handleSelectFocus(index)"><span>{{btn.name}}</span></button>
                 </template>
             </div>
             <div class="">
@@ -32,61 +32,11 @@
                     <div class="col-7">
                         <div class="mt-4">
                             <h2>简介</h2>
-                            <p class="mt-4">系统集成项目管理工程师是工信部和人社部举办的软考中新增开的一门考试。系统集成项目管理工程师主要在信息系统建设和集成工作中担任相关的项目管理工作</p>
+                            <p class="mt-4">{{file.des}}</p>
                         </div>
                         <div class="mt-4">
                             <h2>包内容</h2>
-                            <div class="">
-                                <h5 class="mt-4">示例</h5>
-                                <table class="table table-bordered table-striped table-hover">
-                                    <thead>
-                                        <tr>
-                                            <!-- <th scope="col">#</th> -->
-                                            <th scope="col" style="width:80px">名称</th>
-                                            <th scope="col">描述</th>
-                                            <th scope="col">用途</th>
-                                            <th scope="col">范围</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="tb,index in tables" :key="index">
-                                            <!-- <th scope="row">1</th> -->
-                                            <td>{{tb['名称']}}</td>
-                                            <td>{{tb['描述']}}</td>
-                                            <td>{{tb['用途']}}</td>
-                                            <td>{{tb['范围']}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="imgEg">
-                                <div class="row mt-4">
-                                    <div class="">
-                                        <div id="carouselExampleControls" class="carousel carousel-dark slide"
-                                            data-bs-ride="carousel" data-bs-interval="false">
-                                            <div class="carousel-inner">
-                                                <div class="carousel-item active">
-                                                    <img src="../assets/schedule.jpeg" class="d-block w-100" alt="...">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img src="../assets/schedule.jpeg" class="d-block w-100" alt="...">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img src="../assets/schedule.jpeg" class="d-block w-100" alt="...">
-                                                </div>
-                                            </div>
-                                            <button class="carousel-control-prev" type="button"
-                                                data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            </button>
-                                            <button class="carousel-control-next" type="button"
-                                                data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="mt-4" v-html="file.CONTENT"></div>
                         </div>
                     </div>
                 </div>
@@ -104,31 +54,33 @@
                         id: 0
                     },
                     {
-                        name: "Q&A",
-                        id: 1
-                    },
-                    {
                         name: "Review",
-                        id: 2
+                        id: 1
                     }
                 ],
-                breadcrumbValue: '',
+                file:{},
                 tables:[]
             }
         },
         created() {
-            this.breadcrumbValue = this.$route.params.name
-            this.fileURL = this.$route.params.url
             this.getXlsx()
+        },
+        mounted(){
+            this.$nextTick(()=>{
+                this.file = this.$route.params.file
+            })
         },
         methods: {
             handleOpenTemplate() {
-                window.open(this.fileURL)
+                window.open(this.file.URL)
             },
             getXlsx(){
                 this.$http.get('http://localhost:4999/getXlsx').then(res => {
                     this.tables = res.data.data
                 })
+            },
+            handleSelectFocus(index){
+                this.activeIndex = parseInt(index)
             }
         }
     }
@@ -154,10 +106,17 @@
         padding:0 120px;
         margin:0 -120px;
         background-color: #232323;
+        font-size: 14px;
+        a{
+            color:#fff;
+            &:hover{
+                text-decoration: underline !important;
+            }
+        }
     }
 
     .banner-section {
-        padding: 32px 120px;
+        padding: 10px 120px;
         margin:0 -120px;
         &.bg {
             background-color: #eff1f3;
@@ -165,7 +124,6 @@
     }
 
     .content-section {
-
         h2 {
             font-size: 18px;
             padding-bottom: 10px;
@@ -189,7 +147,6 @@
     .focus {
         border-bottom: 1px solid;
         border-bottom-color: rgba(200, 200, 200, 1);
-
         button {
             border: 0;
             background-color: transparent;
@@ -197,10 +154,9 @@
             color: #333333;
             display: inline-block;
             line-height: 40px;
-            padding: 0 8px;
+            padding: 0 16px;
             text-align: center;
             position: relative;
-            margin-right: 10px;
             &.active:before {
                 content: '';
                 bottom: 0;
@@ -213,7 +169,6 @@
             span{
                 font-size: 16px;
                 font-weight: 400;
-                color:#333;
             }
         }
 

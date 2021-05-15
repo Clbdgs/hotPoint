@@ -6,7 +6,6 @@ class TranslateXlsx {
     parseSheet(sheet) {
         let { data, name } = sheet;
         let thArray = []
-        console.log(data,name)
         data.forEach((row, rowIndex) => {
             if(Array.prototype.isPrototypeOf(row) && row.length != 0){
                 let tableObj = {}

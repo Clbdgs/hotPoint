@@ -7,16 +7,15 @@ const TranslateXlsx = require('./translateXlsx');
 const uploadUrl = "http://localhost:4999/static/upload/";
 class File{
 
-
     static async add(ctx){
-        const file = ctx.request.files.file
+        const params = ctx.request.body
+        const file = ctx.request.files.package
         const fileReader = fs.createReadStream(file.path)  // 创建可读流
         const filePath = path.join(__dirname, '../static/upload');
         const fileResource = filePath + `/${file.name}`;
         let  writeStream = null;
         //判断是否存在static/upload路径，无则新建路径
         if(!fs.existsSync(filePath)){
-            console.log('filePath',filePath)
             fs.mkdir(filePath,(err)=>{
                 if(err){
                     throw new Error(err)
@@ -30,13 +29,8 @@ class File{
             writeStream = fs.createWriteStream(fileResource);
             fileReader.pipe(writeStream); // 可读流通过管道写入可写流
         }
-        var params = {
-            name : file.name,
-            subject:"计算机",
-            url : fileResource
-        }
-        var  addSql = 'INSERT INTO file(Id,name,subject,url) VALUES(?,?,?,?)';
-        var addSqlParams = [new Date(),params.name,params.subject,uploadUrl+params.name]
+        var  addSql = 'INSERT INTO file(Id,name,url,content,status,des) VALUES(?,?,?,?,?,?)';
+        var addSqlParams = [new Date(),params.name,uploadUrl+file.name,params.render,params.status,params.des]
         const [ row ] = await Db.execute(addSql,addSqlParams)
         if(row){
             ctx.response.body ={
@@ -68,7 +62,6 @@ class File{
         let  writeStream = null;
         //判断是否存在static/upload路径，无则新建路径
         if(!fs.existsSync(filePath)){
-            console.log('filePath',filePath)
             fs.mkdir(filePath,(err)=>{
                 if(err){
                     throw new Error(err)
@@ -91,7 +84,6 @@ class File{
         const path = 'static/upload/模版.xlsx';
         const translateXlsx = new TranslateXlsx()
         let table =[]
-        // const file = ctx.request.files.xlsx
         const workSheetsFromBuffer = xlsx.parse(fs.readFileSync(path));
         workSheetsFromBuffer.forEach(item=>{
             translateXlsx.parseSheet(item)

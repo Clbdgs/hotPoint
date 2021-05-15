@@ -66,6 +66,11 @@ export default {
     },
     created(){
     },
+    computed:{
+      getFooter(){
+        return this.$store.state.footer
+      }
+    },
     methods:{
       handleSearch(){
       }
@@ -76,7 +81,6 @@ export default {
 ul li{
   list-style: none;
 }
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
