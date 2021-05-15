@@ -1,5 +1,5 @@
 <template>
-    <div class="home-page">
+    <div class="home-page mt-4">
         <div class="breadcrumbs">
             <ul class="nav nav-pills flex-column flex-sm-row">    
                 <template v-for="topic in topics">
@@ -9,7 +9,7 @@
                 </template>
             </ul>
         </div>
-        <div class="webSite">
+        <div class="webSite clearfix d-flex justify-content-start">
             <ul>
                 <template v-for="(menu,index) in menus">
                     <li :key="index">
@@ -83,6 +83,9 @@ export default {
         // }
     }
     .webSite{
+        ul{
+            padding:0px;
+        }
         ul li{
             display: flex;
             /* text-align: center; */
@@ -90,15 +93,15 @@ export default {
             justify-content: center;
             align-items: center;
             float:left;
-            width:80px;
+            width:120px;
             margin-right:20px;
             border:1px solid #333;
             border-radius: 10px;
-            padding:10px 10px;
             cursor: pointer;
             img{
-                width:48px;
-                height:48px;
+                display: block;
+                width:100%;
+                height:100%;
             }
         }
     }

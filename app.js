@@ -8,6 +8,7 @@ const Koa = require('koa');
 // import staticFiles  from 'staticFiles';  
 const topicRoute = require('./routes/topic.js')
 const UploadRoute = require('./routes/upload.js')
+const sendEmail = require('./routes/sendEmail.js')
 const  fs = require('fs');
 // var path = require('path');
 // let session = require('koa-session');
@@ -21,6 +22,8 @@ const staticFiles  = require('koa-static');
 const app = new Koa();
 
 
+
+
 app.use(cors());
 app.use(koaBody({
     multipart: true, 
@@ -30,8 +33,9 @@ app.use(koaBody({
     }   
 }));
 app.use(koaJson2xlsx());
-app.use(UploadRoute);
-app.use(topicRoute);
+// app.use(sendEmail);
+// app.use(UploadRoute);
+// app.use(topicRoute);
 
 
 app.use(staticFiles('public'));
@@ -48,6 +52,6 @@ app.use(staticFiles('public'));
 app.use(ctx => {
     ctx.body = `Request Body: ${JSON.stringify(ctx.request.body)}`;
 });
-app.listen(4999,function(error){
-    console.log("server is start , localhost:4999")
+app.listen(3000,function(error){
+    console.log("server is start , localhost:3000")
 });

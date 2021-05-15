@@ -58,7 +58,7 @@
                 this.subjectActive = name
             },
             getFiles() {
-                this.$http.get('http://localhost:4999/files').then(res => {
+                this.$http.get('http://localhost:3000/files').then(res => {
                     this.files = res.data.files
                 })
             },
