@@ -211,12 +211,13 @@
           "title": "FILE",
           "fields": [
             {
-              "name": "ID",
-              "type": "IdOrKey",
+              "name": "id",
+              "type": "Integer",
               "remark": "",
               "chnname": "ID",
               "pk": true,
-              "notNull": true
+              "notNull": true,
+              "autoIncrement": true
             },
             {
               "name": "name",
@@ -226,33 +227,373 @@
             },
             {
               "name": "des",
-              "type": "ShortString",
+              "type": "MiddleString",
               "remark": "",
               "chnname": "简介"
             },
             {
-              "name": "SUBJECT",
-              "type": "IdOrKey",
+              "name": "subject",
+              "type": "Integer",
               "remark": "",
               "chnname": "类型"
             },
             {
-              "name": "CONTENT",
+              "name": "catalogueId",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "目录"
+            },
+            {
+              "name": "content",
               "type": "LongString",
               "remark": "",
               "chnname": "内容"
             },
             {
-              "name": "STATUS",
+              "name": "render",
+              "type": "LongString",
+              "remark": "",
+              "chnname": "渲染内容"
+            },
+            {
+              "name": "status",
               "type": "DefaultString",
               "remark": "",
               "chnname": "状态"
             },
             {
-              "name": "URL",
+              "name": "created_time",
+              "type": "Date",
+              "remark": "",
+              "chnname": "创建时间",
+              "notNull": false
+            },
+            {
+              "name": "updated_time",
+              "type": "Date",
+              "remark": "",
+              "chnname": "更新时间",
+              "notNull": false
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "文件"
+        },
+        {
+          "title": "SUBJECT",
+          "fields": [
+            {
+              "name": "id",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "科目ID",
+              "autoIncrement": true,
+              "notNull": true,
+              "pk": true
+            },
+            {
+              "name": "name",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "科目名称"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "科目"
+        },
+        {
+          "title": "USER",
+          "fields": [
+            {
+              "name": "id",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "用户ID",
+              "autoIncrement": true,
+              "notNull": true,
+              "pk": true
+            },
+            {
+              "name": "name",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "用户名"
+            },
+            {
+              "name": "email",
               "type": "ShortString",
               "remark": "",
-              "chnname": "路径"
+              "chnname": "邮箱"
+            },
+            {
+              "name": "password",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "密码"
+            },
+            {
+              "name": "CREATED_TIME",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "用户"
+        },
+        {
+          "title": "ANIMATION",
+          "fields": [
+            {
+              "name": "id",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "ID",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "name",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "名称"
+            },
+            {
+              "name": "des",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "描述"
+            },
+            {
+              "name": "imgUrl",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "图片地址"
+            },
+            {
+              "name": "codeUrl",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "代码地址"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "动画"
+        },
+        {
+          "title": "MATERIAL",
+          "fields": [
+            {
+              "name": "id",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "材料id",
+              "notNull": true,
+              "pk": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "fileId",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "文件id"
+            },
+            {
+              "name": "name",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "材料名称"
+            },
+            {
+              "name": "url",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "材料地址"
             },
             {
               "name": "CREATED_BY",
@@ -326,19 +667,96 @@
               "relationNoShow": true
             }
           ],
-          "chnname": "文件"
+          "chnname": "材料"
+        },
+        {
+          "title": "CATALOGUE",
+          "fields": [
+            {
+              "name": "id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "目录ID",
+              "pk": true,
+              "notNull": true
+            },
+            {
+              "name": "name",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "目录名称"
+            },
+            {
+              "name": "isHidden",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "隐藏显示"
+            },
+            {
+              "name": "parentId",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "父节点id"
+            },
+            {
+              "name": "sort",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "排序"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "目录"
         }
       ],
       "graphCanvas": {
         "nodes": [
-          {
-            "shape": "table",
-            "title": "WEBSITE",
-            "moduleName": false,
-            "x": 580,
-            "y": 240,
-            "id": "6c51f0a5"
-          },
           {
             "shape": "table",
             "title": "TOPIC",
@@ -346,6 +764,30 @@
             "x": 180,
             "y": 160,
             "id": "08a43de4"
+          },
+          {
+            "shape": "table",
+            "title": "MATERIAL",
+            "moduleName": false,
+            "x": 150,
+            "y": 400,
+            "id": "6064215b"
+          },
+          {
+            "shape": "table",
+            "title": "WEBSITE",
+            "moduleName": false,
+            "x": 790,
+            "y": 110,
+            "id": "6c51f0a5"
+          },
+          {
+            "shape": "table",
+            "title": "FILE",
+            "moduleName": false,
+            "x": 610,
+            "y": 390,
+            "id": "7508a52e"
           }
         ],
         "edges": [
@@ -357,8 +799,8 @@
             "id": "692881ae",
             "controlPoints": [
               {
-                "x": 427.89453125,
-                "y": 172.17857142857144
+                "x": 637.89453125,
+                "y": 42.17857142857143
               },
               {
                 "x": 318.6552734375,

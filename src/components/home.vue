@@ -1,25 +1,27 @@
 <template>
-    <div class="home-page mt-4">
-        <div class="breadcrumbs">
-            <ul class="nav nav-pills flex-column flex-sm-row">    
-                <template v-for="topic in topics">
-                    <li class="nav-item" :class="{'active':topicActive=== topic.name}" :key='topic.name' @click="handleSelectTopic(topic.name)">
-                        <a class="nav-link" :class="{'active':topicActive=== topic.name}" href="#">{{topic.name}}</a>
+    <div class="home-page">
+        <div class="aside border-end">            
+            <ul>
+                <template v-for="catalogue in catalogueList">
+                    <li :key=catalogue.id class="mb-1">
+                        <div class="d-inline-flex align-items-center" @click="handleCollapse(catalogue)">
+                            <i class="title" :class="{'show':catalogue.isHidden}"></i><span>{{catalogue.name}}</span>
+                        </div>
+                        <ul v-if="catalogue.isHidden">
+                                <template v-for="sub in catalogue.children">
+                                <li :key=sub.id>
+                                    <span class="sub-title d-inline-flex" :class="{'active':sub.id==subActive}" @click="handleActive(sub)">  
+                                        {{sub.name}}
+                                    </span>
+                                </li>
+                            </template>
+                        </ul>
                     </li>
                 </template>
             </ul>
         </div>
-        <div class="webSite clearfix d-flex justify-content-start">
-            <ul>
-                <template v-for="(menu,index) in menus">
-                    <li :key="index">
-                        <a target="_blank" :href="menu.address">
-                            <img :src="menu.iconUrl" alt="">
-                            <span>{{menu.name}}</span>
-                        </a>
-                    </li>
-                </template>
-             </ul>
+        <div class="markdown-body content-wrapper">
+            <div v-html="content"></div>
         </div>
     </div>
 </template>
@@ -27,84 +29,174 @@
 export default {
     data(){
         return{
-            topicActive:'热门',
-            topics:[
-                { id:1,name:"热门" },
-                { id:2,name:"娱乐" },
-                { id:3,name:"科技" },
-                { id:4,name:"军事" },
-                { id:5,name:"生物" },
-                { id:6,name:"英语" }
-            ],
-            menus:[
-                {
-                    name:"Youtube",
-                    iconUrl:require("../assets/youtube.png"),
-                    address:'http://youtube.com'
+            active:1,
+            subActive:0,
+            catalogueList:[],
+            leftMenu:[
+                {   
+                    id:1,
+                    title:"浏览器相关原理",
+                    isHidden:true,
+                    subContent:[
+                        { id:1.1,name:"渲染原理" },
+                        { id:1.2,name:"渲染原理" },
+                        { id:1.3,name:"渲染原理" },
+                        { id:1.4,name:"渲染原理" }
+                    ]
                 },
-                {
-                    name:"twitter",
-                    iconUrl:require("../assets/twitter.png"),
-                    address:'http://twitter.com'
+                {   
+                    id:2,
+                    title:"前端三板斧HCJ",
+                    isHidden:false,
+                    subContent:[
+                        { id:2.1,name:"HTML常用布局"}
+                    ]
                 },
-                {
-                    name:"facebook",
-                    iconUrl:require("../assets/facebook.png"),
-                    address:'http://facebook.com'
+                {   
+                    id:3,
+                    title:"js模块化发展历史",
+                    isHidden:false,
+                    subContent:[
+                        { id:3.1,name:"commonjs"}
+                    ]
+                },
+                {   
+                    id:4,
+                    title:"前端框架",
+                    isHidden:false,
+                    subContent:[
+                        { id:4.1,name:"vue"}
+                    ]
+                },
+                {   
+                    id:5,
+                    title:"前端工具",
+                    isHidden:false,
+                    subContent:[
+                        { id:5.1,name:"webpack" },
+                        { id:5.2,name:"webpack-chain"}
+                    ]
                 }
-            ]
+            ],
+            files:[],
+            content:''
         }
     },
     created(){
+        this.getFiles()
+        this.getCatalogueList()
+    },
+    mounted(){
     },
     methods:{
+         getFiles(){
+            this.$http.get(this.INTERFACE.getFiles).then(res => {
+                if(res.data.code==200){
+                    this.subActive = res.data.data[0].catalogueId
+                    this.files = res.data.data
+                    this.content = res.data.data[0].render
+                }
+            })
+        },
+        getCatalogueList(){
+            this.$http.get(this.INTERFACE.getCatalogueList).then(res=>{
+                if(res.data.code==200){
+                    if(res.data.data){ 
+                        let catalogueList = []
+                        res.data.data.forEach(item=>{
+                            if(!item.parentId){
+                                item.children = []
+                                catalogueList.push(item)
+                            }else{
+                                let obj = catalogueList.find(el=>el.id===item.parentId)
+                                obj.children.push(item)
+                            }
+                        })
+                        this.catalogueList = catalogueList
+                    }
+                }
+            })
+        },
+        handleCollapse(menu){
+            menu.isHidden = ! menu.isHidden
+        },
+        handleActive(sub){
+            let obj = this.files.find(el=>el.catalogueId ===sub.id)
+            this.content = obj.render
+            this.subActive = sub.catalogueId
+        }, 
         handleSelectTopic(name){
             this.topicActive = name
         }
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .home-page{
-    .breadcrumbs{
-        height:50px;
-        // li{ 
-        //     float:left;
-        //     cursor: pointer;
-        //     margin-right:10px;
-        //     width:50px;
-        //     height:20px;
-        //     padding:5px 5px;
-        //     border:1px solid #333;
-        //     border-radius: 5px;
-        // }
-        // .active-topic{
-        //     color:blue
-        // }
+    a{
+        text-decoration: none;
     }
-    .webSite{
-        ul{
-            padding:0px;
+    ul li {
+        list-style: none;
+        margin-bottom: 5px;
+        cursor: pointer;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }   
+    .aside{
+        position:fixed;
+        width:15rem;
+        top: 3.6rem;
+        left: 0;
+        bottom: 0;
+        padding:1.5rem 0;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+    span.active{
+        font-weight: 600;
+        color: rgba(0,0,0,0.85);
+    }
+    .title{
+        padding:0.25rem 0.5rem;
+        font-weight: 700;
+        color: rgba(0,0,0,0.65);
+        &::before{
+            width: 1.25em;
+            line-height: 0;
+            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+            transition: transform 0.35s ease;
+            transform-origin: .5em 50%;
         }
-        ul li{
-            display: flex;
-            /* text-align: center; */
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            float:left;
-            width:120px;
-            margin-right:20px;
-            border:1px solid #333;
-            border-radius: 10px;
-            cursor: pointer;
-            img{
-                display: block;
-                width:100%;
-                height:100%;
-            }
+        &:hover{
+            border-radius: 4px;
+            color: rgba(0,0,0,0.85);
+            background-color: rgba(121,82,179,0.1);
+        }
+        &.show{
+            transform: rotate(90deg);
+        } 
+    }  
+    .sub-title{  
+        font-size:14px;
+        padding: .1875rem .5rem;
+        margin-top: .125rem;    
+        color: rgba(0,0,0,0.65);
+        &:hover{
+            color: rgba(0,0,0,0.85);
+            background-color: rgba(121,82,179,0.1);
+        }
+    }
+    .content-wrapper{
+        padding:1.5rem 0 6rem 15rem;
+        height: 100%;
+        > div{   
+            max-width: 740px;
+            margin: 0 auto; 
         }
     }
 }
+
     
 </style>

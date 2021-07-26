@@ -24,18 +24,75 @@ CREATE TABLE WEBSITE(
     PRIMARY KEY (ID)
 ) COMMENT = '网站 ';;
 
-ALTER TABLE WEBSITE COMMENT '网站';
+ALTER TABLE WEBSITE COMMENT '网站';;
 DROP TABLE FILE;;/*SkipError*/
 CREATE TABLE FILE(
-    ID VARCHAR(32) NOT NULL   COMMENT 'ID' ,
+    id INT NOT NULL AUTO_INCREMENT  COMMENT 'ID' ,
     name VARCHAR(128)    COMMENT '名称' ,
-    SUBJECT VARCHAR(32)    COMMENT '类型' ,
-    URL VARCHAR(128)    COMMENT '路径' ,
+    des VARCHAR(1024)    COMMENT '简介' ,
+    subject INT    COMMENT '类型' ,
+    catalogueId BIGINT    COMMENT '目录' ,
+    content VARCHAR(3072)    COMMENT '内容' ,
+    render VARCHAR(3072)    COMMENT '渲染内容' ,
+    status VARCHAR(32)    COMMENT '状态' ,
+    created_time DATE    COMMENT '创建时间' ,
+    updated_time DATE    COMMENT '更新时间' ,
+    PRIMARY KEY (id)
+) COMMENT = '文件 ';;
+
+ALTER TABLE FILE COMMENT '文件';;
+DROP TABLE SUBJECT;;/*SkipError*/
+CREATE TABLE SUBJECT(
+    id INT NOT NULL AUTO_INCREMENT  COMMENT '科目ID' ,
+    name VARCHAR(32)    COMMENT '科目名称' ,
+    PRIMARY KEY (id)
+) COMMENT = '科目 ';;
+
+ALTER TABLE SUBJECT COMMENT '科目';;
+DROP TABLE USER;;/*SkipError*/
+CREATE TABLE USER(
+    id INT NOT NULL AUTO_INCREMENT  COMMENT '用户ID' ,
+    name VARCHAR(32)    COMMENT '用户名' ,
+    email VARCHAR(128)    COMMENT '邮箱' ,
+    password VARCHAR(32)    COMMENT '密码' ,
+    CREATED_TIME DATETIME    COMMENT '创建时间' ,
+    PRIMARY KEY (id)
+) COMMENT = '用户 ';;
+
+ALTER TABLE USER COMMENT '用户';;
+DROP TABLE ANIMATION;;/*SkipError*/
+CREATE TABLE ANIMATION(
+    id INT NOT NULL AUTO_INCREMENT  COMMENT 'ID' ,
+    name VARCHAR(32)    COMMENT '名称' ,
+    des VARCHAR(128)    COMMENT '描述' ,
+    imgUrl VARCHAR(128)    COMMENT '图片地址' ,
+    codeUrl VARCHAR(128)    COMMENT '代码地址' ,
+    PRIMARY KEY (id)
+) COMMENT = '动画 ';;
+
+ALTER TABLE ANIMATION COMMENT '动画';;
+DROP TABLE MATERIAL;;/*SkipError*/
+CREATE TABLE MATERIAL(
+    id INT NOT NULL AUTO_INCREMENT  COMMENT '材料id' ,
+    fileId INT    COMMENT '文件id' ,
+    name VARCHAR(128)    COMMENT '材料名称' ,
+    url VARCHAR(128)    COMMENT '材料地址' ,
     CREATED_BY VARCHAR(32)    COMMENT '创建人' ,
     CREATED_TIME DATETIME    COMMENT '创建时间' ,
     UPDATED_BY VARCHAR(32)    COMMENT '更新人' ,
     UPDATED_TIME DATETIME    COMMENT '更新时间' ,
-    PRIMARY KEY (ID)
-) COMMENT = '文件 ';
+    PRIMARY KEY (id)
+) COMMENT = '材料 ';;
 
-ALTER TABLE FILE COMMENT '文件';
+ALTER TABLE MATERIAL COMMENT '材料';;
+DROP TABLE CATALOGUE;;/*SkipError*/
+CREATE TABLE CATALOGUE(
+    id BIGINT NOT NULL   COMMENT '目录ID' ,
+    name VARCHAR(32)    COMMENT '目录名称' ,
+    isHidden INT    COMMENT '隐藏显示' ,
+    parentId BIGINT    COMMENT '父节点id' ,
+    sort INT    COMMENT '排序' ,
+    PRIMARY KEY (id)
+) COMMENT = '目录 ';;
+
+ALTER TABLE CATALOGUE COMMENT '目录';;
