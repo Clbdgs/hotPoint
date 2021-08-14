@@ -9,7 +9,7 @@
                 </template>
             </ul>
         </div>
-        <div class="main ms-4">
+        <div class="main ms-4 mt-4">
             <div v-if="active ===1">
                 <button class="btn btn-success mb-2" @click="handleAddCatalogue">新增目录</button>
                 <button class="btn btn-success mb-2 ms-2" @click="handleSubmit">提交</button>
@@ -66,30 +66,42 @@
                                 placeholder="请输入名称">
                             </div>
                             <div class="row" style="position: relative;">
+                                <label for="type" class="col-form-label fw-bold">类型</label>
+                                <select class="form-select" name="type" @change="handleSelectType">
+                                    <option v-for="type,index in typeList"  :key="index" :value="type.value">{{type.name}}</option>
+                                </select>
+                            </div>
+                            <div class="row" style="position: relative;">
                                 <label for="subject" class="col-form-label fw-bold">科目</label>
-                                <select class="form-select" name="subject"  @change="handleSelectSub">
+                                <select class="form-select" name="subject" @change="handleSelectSub">
                                     <option v-for="sub,index in subjects"  :key="index" :value="sub.name">{{sub.name}}</option>
                                 </select>
                             </div>
                             <div class="row">
                                 <div class="col-6" style="padding-left:0">
-                                    <label class="col-form-label fw-bold"><a class="ms-2" @click="handleAddSubject">新增科目</a></label>
-                                    <label class="col-form-label fw-bold"><a class="ms-2" @click="handleDeleteSubject">删减科目</a></label>
+                                    <label for="subject" class="col-form-label fw-bold">科目新增</label>
                                     <input type="text" class="form-control" v-model="subjectValue">
+                                    <div>
+                                        <button class="btn btn-primary btn-sm mt-2" @click="handleAddSubject">新增</button>
+                                        <button class="btn btn-primary btn-sm mt-2 ms-2" @click="handleDeleteSubject">删减</button>
+                                    </div>
                                 </div>
                                 <div class="col-6 d-flex">
                                 </div>
                             </div>
-                            <div class="row" style="position: relative;">
+                            <div v-if="isArticle" class="row" style="position: relative;">
                                 <label for="catalogue" class="col-form-label fw-bold">目录</label>
                                 <select class="form-select" name="catalogue"  @change="handleSelectcatalogue">
                                     <option v-for="catalogue,index in ctlChildOption"  :key="index" :value="catalogue.name">{{catalogue.name}}</option>
                                 </select>
                             </div>
-                            <div class="row" style="position: relative;">
+                            <div v-if="!isArticle" class="row" style="position: relative;">
                                 <label for="package" class="col-form-label fw-bold">资源</label>
-                                <!-- <input type="text" :title="form.fileName" class="form-control" v-model='form.fileName' placeholder="点击上传"> -->
-                                <input type="file" class="form-control" multiple="multiple" id="formPackage" ref="upload" name="package" accept=".doc,.docx,.xls,.xlsx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                                <input v-if="form.package && isCreated" type="text" :title="form.package.name" class="form-control input-file" v-model='form.package.name' placeholder="点击上传" >
+                                <input type="file" class="form-control real-input-file" multiple="multiple" id="formPackage"  ref="upload" 
+                                name="package" 
+                                accept=".doc,.docx,.xls,.xlsx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                >
                             </div>
                             <div class="row">
                                 <label for="des" class="col-form-label fw-bold">简介</label>
@@ -114,7 +126,7 @@
                         <div class="d-flex mt-3">
                             <button type="button" class="btn btn-primary btn-sm" @click="handleNext">{{isNextStep? '下一步' : '上一步'}}</button>
                             <button v-if="!isNextStep" type="button" class="btn btn-success btn-sm ms-4" @click="handleSaveFile('1')">发布</button>
-                            <button v-if="!isNextStep" type="button" class="btn btn-secondary btn-sm ms-4" @click="handleUpdateFile('0')">草稿</button>
+                            <button v-if="!isNextStep" type="button" class="btn btn-success btn-sm ms-4" @click="handleUpdateFile('0')">保存</button>
                         </div>
                     </form>
                 </div> 
@@ -181,6 +193,10 @@ import catalogueList from './catalogueList.vue'
                         id:0,
                         value:''
                     },
+                    type:{
+                        value:0
+                    },
+                    package:{},
                     catalogueId:0
                 },
                 isNextStep:false,
@@ -190,6 +206,11 @@ import catalogueList from './catalogueList.vue'
                 files: [],
                 img_file:{},
                 subjects:[],
+                typeList:[
+                    {name:'文章',value:0},
+                    {name:'资料',value:1}
+                ],
+                isArticle:true,
                 subjectValue:'',
                 isCreated:false,
                 isAnimation:true,
@@ -201,9 +222,9 @@ import catalogueList from './catalogueList.vue'
             }
         },
         mounted(){
-            this.getCatalogueList()
             this.getFiles()
             this.getSubjects()
+            this.getCatalogueList()
             this.editorToolConfig =  editConfig
         },
         methods: {
@@ -213,7 +234,7 @@ import catalogueList from './catalogueList.vue'
             getCatalogueList(){
                 this.$http.get(this.INTERFACE.getCatalogueList).then(res=>{
                     if(res.data.code==200){
-                        if(res.data.data){ 
+                        if(res.data.data.length>0){ 
                             this.cacheCataList = res.data.data
                             this.ctlChildOption = res.data.data.filter((el)=> {
                                 return el.parentId!==0
@@ -291,10 +312,19 @@ import catalogueList from './catalogueList.vue'
                 })
             },
             handleSelectSub(ev){
-                let id = this.subjects.findIndex((el=>{
+                let obj = this.subjects.find((el=>{
                     return el.name === ev.target.value
                 }))
-                this.form.subject['id']= id+1
+                this.form.subject['id']= obj.id
+            },
+            handleSelectType(ev){
+                if(parseInt(ev.target.value)){
+                    this.isArticle = false
+                    this.form.type.value = 1
+                    return
+                }
+                this.isArticle = true
+                this.form.type.value = 0
             },
             handleSelectcatalogue(ev){
                 let obj = this.cacheCataList.find((el=>{
@@ -302,12 +332,26 @@ import catalogueList from './catalogueList.vue'
                 }))
                 this.form.catalogueId = obj.id
             },
+            handleChange(e){
+                let valueArrary = e.target.value.split('\\')
+                this.form.package.name = valueArrary[valueArrary.length-1]
+                this.$forceUpdate()
+                console.log(e)
+            },
             createFile(){
-                this.isCreated = true
-                this.isNextStep = true
+                let _this = this
+                _this.isCreated = true
+                _this.isNextStep = true
+                let timer = setInterval(() => {
+                    if(_this.$refs && _this.$refs.upload){   
+                        _this.$refs.upload.addEventListener('change',_this.handleChange)
+                        clearTimeout(timer)
+                    }
+                }, 2000);
             },
             handleAddSubject(){
-                this.$http.post(this.INTERFACE.addSubject,{name:this.subjectValue}).then(res=>{
+                if(!this.subjectValue) return
+                this.$http.post(this.INTERFACE.addSubject,{id:new Date().getTime(),name:this.subjectValue}).then(res=>{
                     if(res.data.code==200){
                         this.getSubjects()
                     }
@@ -325,34 +369,29 @@ import catalogueList from './catalogueList.vue'
                     if(res.data.code==200){
                         this.subjects = res.data.data
                         this.form.subject = this.subjects[0]
-                        this.$forceUpdate()
                     }
                 })
             },
             handleEdit(item){
                 this.form = item
+                this.getMaterial(item.id)
                 this.isCreated= true
-            },
-            handleUpdateFile(item){
-                let params = {
-                    id:item.id,
-                    status:item.status
-                }
-                this.$http.post(this.INTERFACE.updateFile,params).then(res => {
-                    console.log(res)
-                    this.isCreated = false
-                })
-            }, 
-            handleDeleteFile(item){
-                this.$http.post(this.INTERFACE.deleteFile,{'id':item.id}).then(res => {
-                    if(res.data.code==200){
-                        this.getFiles()
-                    }
+                this.isNextStep= true
+                this.$nextTick(function () {
+                    this.$refs.upload.addEventListener('change',this.handleChange)
                 })
             },
             getFiles(){
-                this.$http.get(this.INTERFACE.getFiles).then(res => {
+                this.$http.post(this.INTERFACE.getFiles,{type:null}).then(res => {
                     this.files = res.data.data
+                })
+            },
+            getMaterial(id){
+                this.$http.get(this.INTERFACE.getMaterial + '?id='+ id).then(res => {
+                    if(res.data.code==200){
+                        this.form.package = res.data.data[0]
+                        this.$forceUpdate()
+                    }
                 })
             },
             handleNext(){
@@ -362,52 +401,63 @@ import catalogueList from './catalogueList.vue'
                 this.img_file[pos] = $file
             },
             addImage(type){
-                var md = this.$refs.md
+                var _this = this
+                var md = _this.$refs.md
                 var formdata = new FormData();
-                for(var _img in this.img_file){
-                    formdata.append(_img, this.img_file[_img]);
+                for(var _img in _this.img_file){
+                    formdata.append(_img, _this.img_file[_img]);
                 }
-                this.$http.post(this.INTERFACE.uploadImg, formdata).then(res => {
+                _this.$http.post(_this.INTERFACE.uploadImg, formdata).then(res => {
                     if(res.data.code==200){
                         for (var img of res.data.data) {
                         // $vm.$img2Url 详情见本页末尾
                             md.$img2Url((parseInt(img[0])), img[1]);
                         }
-                        let form = document.querySelector("#fileForm");
-                        let render = this.$refs.md.d_render
-                        let fromData = new FormData(form);
-                        fromData.set('subject',this.form.subject.id)
-                        fromData.set('catalogueId',this.form.catalogueId)
-                        fromData.set('content',this.form.content)
-                        fromData.set('render',render)
-                        fromData.set('status',type? '1':'0')
-                            this.$http.post(this.INTERFACE.uploadFile, fromData).then(res => {
-                            if(res.data.code==200){
-                                this.addImage()
-                                this.isCreated=false
-                                this.getFiles()
-                            }
-                        })
+                        _this.addFile(type)
                     }
                 })
             },
             handleSaveFile(type){
                 this.addImage(type)
-                // let form = document.querySelector("#fileForm");
-                // let render = this.$refs.md.d_render
-                // let fromData = new FormData(form);
-                // fromData.set('subject',this.form.subject.id)
-                // fromData.set('content',this.form.content)
-                // fromData.set('render',render)
-                // fromData.set('status',type? '1':'0')
-                // this.$http.post(this.INTERFACE.uploadFile, fromData).then(res => {
-                //     if(res.data.code==200){
-                //         this.addImage()
-                //         this.isCreated=false
-                //         this.getFiles()
-                //     }
-                // })
-           }
+           },
+           addFile(type){
+            let form = document.querySelector("#fileForm");
+            let render = this.$refs.md.d_render
+            let fromData = new FormData(form);
+            fromData.set('type',this.form.type.value)
+            if(this.form.type.value){
+                this.form.catalogueId = 0
+            }
+            fromData.set('subjectId',this.form.subject.id)
+            fromData.set('catalogueId',this.form.catalogueId)
+            fromData.set('content',this.form.content)
+            fromData.set('render',render)
+            fromData.set('status',type? '1':'0')
+               this.$http.post(this.INTERFACE.addFile, fromData).then(res => {
+                    if(res.data.code==200){
+                        this.isCreated=false
+                        this.getFiles()
+                    }
+                })
+           },
+            handleUpdateFile(item){
+                let params = {
+                    id:item.id,
+                    status:item.status
+                }
+                this.$http.post(this.INTERFACE.updateFile,params).then(res => {
+                    if(res.data.code==200){
+                        this.isCreated = false
+                    }
+                })
+            }, 
+            handleDeleteFile(item){
+                this.$http.post(this.INTERFACE.deleteFile,{'id':item.id}).then(res => {
+                    if(res.data.code==200){
+                        this.getFiles()
+                    }
+                })
+            },
             // handleUploadXls(){
             //     var form = document.querySelector("#fileForm");
             //     let fromData = new FormData(form);
@@ -423,11 +473,15 @@ import catalogueList from './catalogueList.vue'
     }
 </script>
 <style lang='scss' scoped>
+@function remTpx($rem,$px) { 
+  @return ($rem*16 + $px)+px
+}
 #passwordHelpInline .link{
     color: #333;
 }
 .manage-page{
-    margin-top: 20px;
+    margin-left:-8rem;
+    margin-top: 3rem;
 }
 .nav-manage{
     li{
@@ -439,25 +493,39 @@ import catalogueList from './catalogueList.vue'
 }
 .nav{
     background-color: #eee;
-    padding:10px 0;
+    padding:2rem 0;
     margin-right: 20px;
     position: fixed;
     top:3.5rem;
+    left:0;
     bottom:0;
-    width:15rem;
+    width:12rem;
     box-sizing: border-box;
 }
 .main{
-    padding:1.5rem 0 6rem 15rem;
+    padding-right:3rem;
+    padding-left:2rem;
+    margin: 0 auto; 
+    left:12rem;
+    position: absolute;
+    top:remTpx(1.4,40);
+    bottom: 0px;
+    overflow-y: auto;
+    width: 52rem;
+    max-height: 28rem;
 }
-.fileInput{
+.input-file{
+    cursor: pointer;
     opacity: 1;
+}
+.real-input-file{
+    opacity: 0;
     position: absolute;
     bottom:0;
     left:0;
-    width: 200px;
 }
 .mavon-editor{
+    z-index:1;
     height:500px;
 }
 .node-arrow{

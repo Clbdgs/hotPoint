@@ -19,8 +19,10 @@ Vue.prototype.INTERFACE = service['INTERFACE']
 Vue.use(VueAxios,axios);
 Vue.use(mavonEditor)
 Vue.config.productionTip = false
-new Vue({
+var app  = new Vue({
   router,
   store,
   render: h => h(App),
 }).$mount('#app')
+
+console.log('app',app)

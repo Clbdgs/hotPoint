@@ -12,8 +12,9 @@ class Subject{
     }
     
     static async addSubject(ctx){
-        var sql = 'INSERT INTO SUBJECT(name) VALUES(?)';
-        var addParams = [ctx.request.body.name]
+        const params = ctx.request.body
+        var sql = 'INSERT INTO SUBJECT(id,name) VALUES(?,?)';
+        var addParams = [params.id,params.name]
         await Db.execute(sql,addParams);
         ctx.response.body ={
             code: 200,

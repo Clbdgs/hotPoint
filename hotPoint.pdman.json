@@ -5,209 +5,6 @@
       "chnname": "",
       "entities": [
         {
-          "title": "TOPIC",
-          "fields": [
-            {
-              "name": "ID",
-              "type": "IdOrKey",
-              "remark": "",
-              "chnname": "主题ID",
-              "pk": true,
-              "notNull": true
-            },
-            {
-              "name": "TOPIC_NAME",
-              "type": "Name",
-              "remark": "",
-              "chnname": "主题名称"
-            },
-            {
-              "name": "CREATED_BY",
-              "type": "IdOrKey",
-              "remark": "",
-              "chnname": "创建人"
-            },
-            {
-              "name": "CREATED_TIME",
-              "type": "DateTime",
-              "remark": "",
-              "chnname": "创建时间"
-            },
-            {
-              "name": "UPDATED_BY",
-              "type": "IdOrKey",
-              "remark": "",
-              "chnname": "更新人"
-            },
-            {
-              "name": "UPDATED_TIME",
-              "type": "DateTime",
-              "remark": "",
-              "chnname": "更新时间"
-            }
-          ],
-          "indexs": [],
-          "headers": [
-            {
-              "fieldName": "chnname",
-              "relationNoShow": false
-            },
-            {
-              "fieldName": "name",
-              "relationNoShow": false
-            },
-            {
-              "fieldName": "type",
-              "relationNoShow": false
-            },
-            {
-              "fieldName": "dataType",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "remark",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "pk",
-              "relationNoShow": false
-            },
-            {
-              "fieldName": "notNull",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "autoIncrement",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "defaultValue",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "relationNoShow",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "uiHint",
-              "relationNoShow": true
-            }
-          ],
-          "chnname": "主题"
-        },
-        {
-          "title": "WEBSITE",
-          "fields": [
-            {
-              "name": "TOPIC_ID",
-              "type": "IdOrKey",
-              "remark": "外键",
-              "chnname": "网站主题ID"
-            },
-            {
-              "name": "ID",
-              "type": "IdOrKey",
-              "remark": "",
-              "chnname": "网站ID",
-              "pk": true,
-              "notNull": true,
-              "relationNoShow": false
-            },
-            {
-              "name": "NAME",
-              "type": "Name",
-              "remark": "",
-              "chnname": "网站名称"
-            },
-            {
-              "name": "ADDRESS",
-              "type": "MiddleString",
-              "remark": "",
-              "chnname": "网站地址",
-              "uiHint": "URL"
-            },
-            {
-              "name": "ICON_ADDRESS",
-              "type": "MiddleString",
-              "remark": "",
-              "chnname": "网站图片地址",
-              "uiHint": "URL"
-            },
-            {
-              "name": "CREATED_BY",
-              "type": "IdOrKey",
-              "remark": "",
-              "chnname": "创建人"
-            },
-            {
-              "name": "CREATED_TIME",
-              "type": "DateTime",
-              "remark": "",
-              "chnname": "创建时间"
-            },
-            {
-              "name": "UPDATED_BY",
-              "type": "IdOrKey",
-              "remark": "",
-              "chnname": "更新人"
-            },
-            {
-              "name": "UPDATED_TIME",
-              "type": "DateTime",
-              "remark": "",
-              "chnname": "更新时间"
-            }
-          ],
-          "indexs": [],
-          "headers": [
-            {
-              "fieldName": "chnname",
-              "relationNoShow": false
-            },
-            {
-              "fieldName": "name",
-              "relationNoShow": false
-            },
-            {
-              "fieldName": "type",
-              "relationNoShow": false
-            },
-            {
-              "fieldName": "dataType",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "remark",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "pk",
-              "relationNoShow": false
-            },
-            {
-              "fieldName": "notNull",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "autoIncrement",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "defaultValue",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "relationNoShow",
-              "relationNoShow": true
-            },
-            {
-              "fieldName": "uiHint",
-              "relationNoShow": true
-            }
-          ],
-          "chnname": "网站"
-        },
-        {
           "title": "FILE",
           "fields": [
             {
@@ -232,10 +29,16 @@
               "chnname": "简介"
             },
             {
-              "name": "subject",
+              "name": "type",
               "type": "Integer",
               "remark": "",
               "chnname": "类型"
+            },
+            {
+              "name": "subjectId",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "科目"
             },
             {
               "name": "catalogueId",
@@ -245,13 +48,13 @@
             },
             {
               "name": "content",
-              "type": "LongString",
+              "type": "LongText",
               "remark": "",
               "chnname": "内容"
             },
             {
               "name": "render",
-              "type": "LongString",
+              "type": "LongText",
               "remark": "",
               "chnname": "渲染内容"
             },
@@ -266,13 +69,6 @@
               "type": "Date",
               "remark": "",
               "chnname": "创建时间",
-              "notNull": false
-            },
-            {
-              "name": "updated_time",
-              "type": "Date",
-              "remark": "",
-              "chnname": "更新时间",
               "notNull": false
             }
           ],
@@ -330,10 +126,10 @@
           "fields": [
             {
               "name": "id",
-              "type": "Integer",
+              "type": "BigInt",
               "remark": "",
               "chnname": "科目ID",
-              "autoIncrement": true,
+              "autoIncrement": false,
               "notNull": true,
               "pk": true
             },
@@ -422,12 +218,6 @@
               "type": "DefaultString",
               "remark": "",
               "chnname": "密码"
-            },
-            {
-              "name": "CREATED_TIME",
-              "type": "DateTime",
-              "remark": "",
-              "chnname": "创建时间"
             }
           ],
           "indexs": [],
@@ -567,57 +357,47 @@
         },
         {
           "title": "MATERIAL",
+          "chnname": "材料 ",
           "fields": [
             {
               "name": "id",
-              "type": "Integer",
-              "remark": "",
+              "type": "INT_10",
               "chnname": "材料id",
-              "notNull": true,
+              "remark": "",
               "pk": true,
-              "autoIncrement": true
+              "notNull": true,
+              "autoIncrement": true,
+              "defaultValue": ""
             },
             {
               "name": "fileId",
-              "type": "Integer",
+              "type": "INT_10",
+              "chnname": "文件id",
               "remark": "",
-              "chnname": "文件id"
+              "pk": false,
+              "notNull": false,
+              "autoIncrement": false,
+              "defaultValue": ""
             },
             {
               "name": "name",
-              "type": "ShortString",
+              "type": "VARCHAR_128",
+              "chnname": "材料名称",
               "remark": "",
-              "chnname": "材料名称"
+              "pk": false,
+              "notNull": false,
+              "autoIncrement": false,
+              "defaultValue": ""
             },
             {
               "name": "url",
-              "type": "ShortString",
+              "type": "VARCHAR_128",
+              "chnname": "材料地址",
               "remark": "",
-              "chnname": "材料地址"
-            },
-            {
-              "name": "CREATED_BY",
-              "type": "IdOrKey",
-              "remark": "",
-              "chnname": "创建人"
-            },
-            {
-              "name": "CREATED_TIME",
-              "type": "DateTime",
-              "remark": "",
-              "chnname": "创建时间"
-            },
-            {
-              "name": "UPDATED_BY",
-              "type": "IdOrKey",
-              "remark": "",
-              "chnname": "更新人"
-            },
-            {
-              "name": "UPDATED_TIME",
-              "type": "DateTime",
-              "remark": "",
-              "chnname": "更新时间"
+              "pk": false,
+              "notNull": false,
+              "autoIncrement": false,
+              "defaultValue": ""
             }
           ],
           "indexs": [],
@@ -666,8 +446,7 @@
               "fieldName": "uiHint",
               "relationNoShow": true
             }
-          ],
-          "chnname": "材料"
+          ]
         },
         {
           "title": "CATALOGUE",
@@ -759,69 +538,119 @@
         "nodes": [
           {
             "shape": "table",
-            "title": "TOPIC",
+            "title": "CATALOGUE",
             "moduleName": false,
-            "x": 180,
-            "y": 160,
-            "id": "08a43de4"
-          },
-          {
-            "shape": "table",
-            "title": "MATERIAL",
-            "moduleName": false,
-            "x": 150,
-            "y": 400,
-            "id": "6064215b"
-          },
-          {
-            "shape": "table",
-            "title": "WEBSITE",
-            "moduleName": false,
-            "x": 790,
-            "y": 110,
-            "id": "6c51f0a5"
+            "x": 100,
+            "y": 320,
+            "id": "41f753b2",
+            "size": [
+              267.09445690448564,
+              163.15361446145113
+            ]
           },
           {
             "shape": "table",
             "title": "FILE",
             "moduleName": false,
-            "x": 610,
-            "y": 390,
-            "id": "7508a52e"
+            "x": 500,
+            "y": 240,
+            "id": "7508a52e",
+            "size": [
+              273.1831617671003,
+              225.9463619614512
+            ]
+          },
+          {
+            "shape": "table",
+            "title": "USER",
+            "moduleName": false,
+            "x": 860,
+            "y": 40,
+            "id": "f09ad329"
+          },
+          {
+            "shape": "table",
+            "title": "SUBJECT",
+            "moduleName": false,
+            "x": 111.45431692370978,
+            "y": 55.583756012051495,
+            "id": "dcab52c8",
+            "size": [
+              313.60999454727374,
+              116.98736594700546
+            ]
+          },
+          {
+            "shape": "table",
+            "title": "MATERIAL",
+            "moduleName": false,
+            "x": 940,
+            "y": 350,
+            "id": "09dceead"
           }
         ],
         "edges": [
           {
             "shape": "erdRelation",
-            "relation": "0,n:1",
-            "source": "6c51f0a5",
-            "target": "08a43de4",
-            "id": "692881ae",
+            "relation": "1:1",
+            "source": "7508a52e",
+            "target": "41f753b2",
+            "id": "fbf78b97",
             "controlPoints": [
               {
-                "x": 637.89453125,
-                "y": 42.17857142857143
+                "x": 336.90841911644986,
+                "y": 263.2431060260286
               },
               {
-                "x": 318.6552734375,
-                "y": 122.25
+                "x": 260.04722845224285,
+                "y": 272.158983104525
               }
             ],
-            "sourceAnchor": 0,
+            "sourceAnchor": 10,
+            "targetAnchor": 1
+          },
+          {
+            "shape": "erdRelation",
+            "relation": "0,n:1",
+            "source": "7508a52e",
+            "target": "dcab52c8",
+            "id": "b957ac01",
+            "controlPoints": [
+              {
+                "x": 336.90841911644986,
+                "y": 241.86034864585844
+              },
+              {
+                "x": 294.75931419734667,
+                "y": 41.95458435451634
+              }
+            ],
+            "sourceAnchor": 8,
             "targetAnchor": 1
           }
         ]
       },
       "associations": [
         {
-          "relation": "0,n:1",
+          "relation": "1:1",
           "from": {
-            "entity": "WEBSITE",
-            "field": "TOPIC_ID"
+            "entity": "FILE",
+            "field": "catalogueId"
           },
           "to": {
-            "entity": "TOPIC",
-            "field": "ID"
+            "entity": "CATALOGUE",
+            "field": "id"
+          }
+        },
+        {
+          "relation": "0,n:1",
+          "from": {
+            "entity": "FILE",
+            "field": "subjectId"
+          },
+          "to": {
+            "entity": "SUBJECT",
+            "field": "id"
           }
         }
       ]
@@ -1227,6 +1056,78 @@
             "type": "CHAR(1)"
           }
         }
+      },
+      {
+        "name": "BIGINT_19",
+        "code": "BIGINT_19",
+        "apply": {
+          "MYSQL": {
+            "type": "BIGINT(19)"
+          }
+        }
+      },
+      {
+        "name": "DATE",
+        "code": "DATE",
+        "apply": {
+          "MYSQL": {
+            "type": "DATE"
+          }
+        }
+      },
+      {
+        "name": "DATETIME",
+        "code": "DATETIME",
+        "apply": {
+          "MYSQL": {
+            "type": "DATETIME"
+          }
+        }
+      },
+      {
+        "name": "INT_10",
+        "code": "INT_10",
+        "apply": {
+          "MYSQL": {
+            "type": "INT(10)"
+          }
+        }
+      },
+      {
+        "name": "VARCHAR_1024",
+        "code": "VARCHAR_1024",
+        "apply": {
+          "MYSQL": {
+            "type": "VARCHAR(1024)"
+          }
+        }
+      },
+      {
+        "name": "VARCHAR_128",
+        "code": "VARCHAR_128",
+        "apply": {
+          "MYSQL": {
+            "type": "VARCHAR(128)"
+          }
+        }
+      },
+      {
+        "name": "VARCHAR_3072",
+        "code": "VARCHAR_3072",
+        "apply": {
+          "MYSQL": {
+            "type": "VARCHAR(3072)"
+          }
+        }
+      },
+      {
+        "name": "VARCHAR_32",
+        "code": "VARCHAR_32",
+        "apply": {
+          "MYSQL": {
+            "type": "VARCHAR(32)"
+          }
+        }
       }
     ],
     "database": [
@@ -1301,7 +1202,7 @@
   "profile": {
     "dbs": [
       {
-        "name": "",
+        "name": "hotpoint",
         "defaultDB": true,
         "properties": {
           "driver_class_name": "com.mysql.jdbc.Driver",

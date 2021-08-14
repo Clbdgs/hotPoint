@@ -4,8 +4,9 @@ const path = require('path')
 const send = require('koa-send');
 const xlsx = require('node-xlsx');
 const TranslateXlsx = require('./translateXlsx');
-const service = require('../utils/util')
-const domain = 'http://clbdgs.xyz/v1/file'
+const service = require('../utils/util');
+const { FILE } = require('dns');
+const domain = 'http://clbdgs.xyz'
 
 
 class File{
@@ -38,13 +39,13 @@ class File{
     }
     static async addImg(ctx){
         const file = ctx.request.files
-        let imgAddress = domain + '/static/img/'
+        let imgAddress = domain + '/static/image/'
         let fileArray = []
         let fileReader = null
         let writeStream = null
         let fileResource = null
         let imgPathReponse = []
-        const filePath = path.join(__dirname, `../../static/img`);
+        const filePath = path.join(__dirname, `../../static/image`);
         for (const key in file) {
             fileArray.push([key,file[key]])
         }
@@ -67,24 +68,28 @@ class File{
     static async addFile(ctx){
         const params = ctx.request.body
         const file = ctx.request.files.package
+        console.log('params',file,params)
         let materialUrl = domain + '/static/material/'
         let fileId = 0
         let  writeStream = null;
         let time = service.getCompleteTime()
-        var  addSql = 'INSERT INTO FILE(name,des,subject,catalogueId,content,render,status,created_time,updated_time) VALUES(?,?,?,?,?,?,?,?,?)';
-        var addSqlParams = [params.name,params.des,params.subject,params.catalogueId,params.content,params.render,params.status,time,time]
+        var  addSql = 'INSERT INTO FILE(name,des,type,subjectId,catalogueId,content,render,status,created_time) VALUES(?,?,?,?,?,?,?,?,?)';
+        var addSqlParams = [params.name,params.des,params.type,params.subjectId,params.catalogueId,params.content,params.render,params.status,time]
         const [ row ] = await Db.execute(addSql,addSqlParams)
         
         fileId = row.insertId
-        const fileReader = fs.createReadStream(file.path)  // 创建可读流
-        const filePath = path.join(__dirname, `../../static/material`);
-        const fileResource = filePath + `/${file.name}`;
-        //判断是否存在static/upload路径，无则新建路径
-        writeStream = fs.createWriteStream(fileResource);
-        fileReader.pipe(writeStream);
-        var  addMaterialSql = 'INSERT INTO MATERIAL(fileId,name,url) VALUES(?,?,?)';
-            var sqlParams = [fileId,file.name,materialUrl+file.name]
-            Db.execute(addMaterialSql,sqlParams)
+        if(file){
+            const file = ctx.request.files.package
+            const fileReader = fs.createReadStream(file.path)  // 创建可读流
+            const filePath = path.join(__dirname, `../../static/material`);
+            const fileResource = filePath + `/${file.name}`;
+            //判断是否存在static/upload路径，无则新建路径
+            writeStream = fs.createWriteStream(fileResource);
+            fileReader.pipe(writeStream);
+            var  addMaterialSql = 'INSERT INTO MATERIAL(fileId,name,url) VALUES(?,?,?)';
+                var sqlParams = [fileId,file.name,materialUrl+file.name]
+                Db.execute(addMaterialSql,sqlParams)
+        }
         if(row){
             ctx.response.body ={
                 code: 200,
@@ -93,7 +98,13 @@ class File{
         }
     }
     static async getFiles(ctx){
-        let sql = 'Select * from FILE'
+        const params = ctx.request.body
+        let sql = ''
+        if(!params.type){
+            sql = 'Select * from FILE'
+        }else{
+            sql = `Select * from FILE where type=${params.type}`
+        }
         const [ files ] = await Db.execute(sql);
         ctx.response.body ={
             data : files,
@@ -131,12 +142,6 @@ class File{
     static async downLoad(ctx){
         const name = ctx.params.name;
         const path = `../../static/material/${name}`;
-        ctx.attachment(path);
-        await send(ctx, path);
-    }
-    static async downLoadImg(ctx){
-        const name = ctx.params.name;
-        const path = `../../static/img/${name}`;
         ctx.attachment(path);
         await send(ctx, path);
     }

@@ -1,27 +1,29 @@
 <template>
-    <div class="home-page">
-        <div class="aside border-end">            
-            <ul>
-                <template v-for="catalogue in catalogueList">
-                    <li :key=catalogue.id class="mb-1">
-                        <div class="d-inline-flex align-items-center" @click="handleCollapse(catalogue)">
-                            <i class="title" :class="{'show':catalogue.isHidden}"></i><span>{{catalogue.name}}</span>
-                        </div>
-                        <ul v-if="catalogue.isHidden">
-                                <template v-for="sub in catalogue.children">
-                                <li :key=sub.id>
-                                    <span class="sub-title d-inline-flex" :class="{'active':sub.id==subActive}" @click="handleActive(sub)">  
-                                        {{sub.name}}
-                                    </span>
-                                </li>
-                            </template>
-                        </ul>
-                    </li>
-                </template>
-            </ul>
-        </div>
-        <div class="markdown-body content-wrapper">
-            <div v-html="content"></div>
+    <div class="home-page" :class="{'sidebar-open':getSideOpen}">
+        <div class="">
+            <div class="aside border-end">            
+                <ul>
+                    <template v-for="catalogue in catalogueList">
+                        <li :key=catalogue.id class="mb-1">
+                            <div class="d-inline-flex align-items-center" @click="handleCollapse(catalogue)">
+                                <i class="title" :title="catalogue.name" :class="{'show':catalogue.isHidden}"></i><span>{{catalogue.name}}</span>
+                            </div>
+                            <ul v-if="catalogue.isHidden">
+                                    <template v-for="sub in catalogue.children">
+                                    <li :key=sub.id>
+                                        <span class="sub-title" :class="{'active':sub.id==subActive}" :title="sub.name" @click="handleActive(sub)">  
+                                            {{sub.name}}
+                                        </span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+            <div class="markdown-body content-wrapper  mt-4 ">
+                <div v-html="content"></div>
+            </div>
         </div>
     </div>
 </template>
@@ -79,18 +81,24 @@ export default {
                 }
             ],
             files:[],
-            content:''
+            content:'',
+            isSideOpen:false
         }
     },
     created(){
         this.getFiles()
         this.getCatalogueList()
     },
+    computed:{
+        getSideOpen(){
+            return this.$store.state.isSideOpen
+        }
+    },
     mounted(){
     },
     methods:{
          getFiles(){
-            this.$http.get(this.INTERFACE.getFiles).then(res => {
+            this.$http.post(this.INTERFACE.getFiles,{type:0}).then(res => {
                 if(res.data.code==200){
                     this.subActive = res.data.data[0].catalogueId
                     this.files = res.data.data
@@ -132,6 +140,48 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
+@function remTpx($rem,$px) { 
+  @return ($rem*16 + $px)+px
+}
+@media (max-width:700px) {
+    .home-page .aside {
+        top: 3.6rem;
+        transform: translateX(-100%);
+        transition: transform .2s ease;
+    }
+    .home-page  .content-wrapper{
+        left:0;
+    }
+}
+.sidebar-open .aside{
+    top: 3.6rem;
+    transform: translateX(0);
+}
+.aside{
+    position: fixed;
+    top: remTpx(1.4,40);
+    bottom: 0;
+    width:14rem;
+    padding:1.5rem 0;
+    padding-left:2rem;
+    box-sizing: border-box;
+    background-color: #fff;
+    z-index: 1;
+    >ul{
+        margin-left:-2rem;
+    }
+}
+.content-wrapper{ 
+    padding-right:3rem;
+    padding-left:2rem;
+    width:100%;
+    left:14rem;
+    position: absolute;
+    top:remTpx(1.4,40);
+    bottom: 0px;
+    overflow-y: auto;
+}
 .home-page{
     a{
         text-decoration: none;
@@ -144,16 +194,6 @@ export default {
         text-overflow: ellipsis;
         overflow: hidden;
     }   
-    .aside{
-        position:fixed;
-        width:15rem;
-        top: 3.6rem;
-        left: 0;
-        bottom: 0;
-        padding:1.5rem 0;
-        box-sizing: border-box;
-        overflow-y: auto;
-    }
     span.active{
         font-weight: 600;
         color: rgba(0,0,0,0.85);
@@ -186,14 +226,6 @@ export default {
         &:hover{
             color: rgba(0,0,0,0.85);
             background-color: rgba(121,82,179,0.1);
-        }
-    }
-    .content-wrapper{
-        padding:1.5rem 0 6rem 15rem;
-        height: 100%;
-        > div{   
-            max-width: 740px;
-            margin: 0 auto; 
         }
     }
 }

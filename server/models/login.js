@@ -4,7 +4,7 @@ class Login {
 
     static async login(ctx){
         const params = ctx.request.body
-        let sql = `select name from USER where binary email='${params.email}' and password='${params.password}'`
+        let sql = `select name from where binary email='${params.email}' and password='${params.password}'`
         const [user] = await Db.execute(sql);
         if(user[0]){
             ctx.response.body ={

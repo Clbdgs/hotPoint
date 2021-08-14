@@ -1,18 +1,16 @@
 <template>
     <div class="knowled-contanier">
-        <div class="row">
-            <div class="col-8">
-                <div class="ms-4" v-html="file.render"></div>
-            </div>
-            <div class="col-4 aside-right">
-                <ul class="material-list">
-                    <template v-for="material,index in materials">
-                        <li :key="index" @click="handleDownLoad(material.url)">
-                            <span><a href="javascript:void()">{{material.name}}</a></span>
-                        </li>
-                    </template>
-                </ul>
-            </div>
+        <div class="content-warpper">
+            <div class="" v-html="file.render"></div>
+        </div>
+        <div class="aside-right">
+            <ul class="material-list">
+                <template v-for="material,index in materials">
+                    <li :key="index" @click="handleDownLoad(material.url)">
+                        <span><a href="javascript:void()">{{material.name}}</a></span>
+                    </li>
+                </template>
+            </ul>
         </div>
     </div>
 </template>
@@ -68,9 +66,20 @@
     }
 </script>
 <style lang="scss" scoped>
+@function remTpx($rem,$px) { 
+  @return ($rem*16 + $px)+px
+}
 .knowled-contanier{
+    display: flex;
+    justify-content: flex-start;
+    padding-left:6rem;
+    max-height: calc(100vh - 66px);
+    padding-top:2rem;
+    overflow-y: auto;
+    .content-warpper{
+        width:80%;
+    }
     .aside-right{
-        background-color: #eee;
         padding:10px 20px;
     }
     .material-list{

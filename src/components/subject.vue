@@ -1,6 +1,6 @@
 <template>
     <div class="subject-contanier">
-        <main class="row">
+        <main>
             <div class="d-flex justify-content-center search mb-4">
                 <div class="search-wrapper">
                     <input class="ms-0" autocomplete="off" autofocus placeholder="Search">
@@ -12,28 +12,30 @@
                 </div>
                 <!-- <button class="btn btn-outline-success" type="submit">Search</button>             -->
             </div>
-            <div class="resource-nav col-sm-2">
-                <ul>
-                    <template v-for="sub,index in subjects">
-                        <li :key="index" :class="{'active':sub.id==subjectIndex}" @click="handleSelectSubject(sub.id)">
-                            {{sub.name}}
-                        </li>
-                    </template>
-                </ul>
-            </div>
-            <div class="col-8 row">
-                 <template v-for="file,index in filterFileData">
-                    <div v-if="file.status=='1'" class="mb-4 col-sm-4" :key="file.index">
-                        <div ref="cardRef" class="card text-start w-100 h-100"
-                            @mouseenter="handleCardShadow(index)" @mouseleave="handleCardShadow(index,false)">
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold">{{file.name}}</h5>
-                                <p class="card-text">{{file.des}}</p>
-                                <a class="btn btn-primary btn-sm mt-2" @click="handleToDetail(file)">详情</a>
+            <div class="row">
+                <div class="resource-nav col-sm-2">
+                    <ul>
+                        <template v-for="sub,index in subjects">
+                            <li :key="index" :class="{'active':sub.id==subjectIndex}" @click="handleSelectSubject(sub.id)">
+                                {{sub.name}}
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="col-8 row">
+                    <template v-for="file,index in filterFileData">
+                        <div v-if="file.status=='1'" class="mb-4 col-sm-4" :key="file.index">
+                            <div ref="cardRef" class="card text-start w-100 h-100"
+                                @mouseenter="handleCardShadow(index)" @mouseleave="handleCardShadow(index,false)">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold">{{file.name}}</h5>
+                                    <p class="card-text">{{file.des}}</p>
+                                    <a class="btn btn-primary btn-sm mt-2" @click="handleToDetail(file)">详情</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </template>
+                    </template>
+                </div>
             </div>
         </main>
     </div>
@@ -42,7 +44,7 @@
     export default {
         data() {
             return {
-                subjectIndex: "1",
+                subjectIndex: 0,
                 files: [],
                 subjects:[]
             }
@@ -54,7 +56,7 @@
         computed:{
             filterFileData(){
                 return this.files.filter((item)=>{
-                    return item.subject == this.subjectIndex
+                    return item.subjectId == this.subjectIndex
                 })
             }
         },
@@ -66,12 +68,13 @@
                 this.$http.get(this.INTERFACE.getSubject).then(res=>{
                     if(res.data.code==200){
                         this.subjects = res.data.data
+                        this.subjectIndex = res.data.data[0].id
                         this.$forceUpdate()
                     }
                 })
             },
             getFiles() {
-                this.$http.get(this.INTERFACE.getFiles).then(res => {
+                this.$http.post(this.INTERFACE.getFiles,{type:1}).then(res => {
                     this.files = res.data.data
                 })
             },
@@ -128,12 +131,12 @@
     }
 }
 .subject-contanier {
-    padding:0px 50px;
+    padding-top: 2rem;
     .nav-link {
         color: #333;
     }
     .resource-nav{
-        padding:0;
+        padding-left:4rem;
         border-left: 1px solid #eee;
         height:100%;
         ul {

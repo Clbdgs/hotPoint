@@ -16,7 +16,7 @@ const  INTERFACE = {
     'catalogueList':getEnvUrl() +  '/catalogue/add',
     'getCatalogueList':getEnvUrl() +  '/catalogue/get',
     'deleteCatalogue':getEnvUrl() +  '/catalogue/delete',
-    'uploadFile':getEnvUrl() +  '/file/uploadFile',
+    'addFile':getEnvUrl() +  '/file/addFile',
     'getFiles': getEnvUrl() +  '/file/getFiles',
     'updateFile':getEnvUrl() +  '/file/updateFile',
     'uploadImg':getEnvUrl() +  '/file/addImg',
@@ -29,19 +29,6 @@ const  INTERFACE = {
     'getAnimations': getEnvUrl() +  '/animation/getAnimations',
     'login': getEnvUrl() +  '/login'
 }
-// const  INTERFACE = {
-//     'uploadFile': '/file/uploadFile',
-//     'getFiles':  '/file/getFiles',
-//     'updateFile': '/file/updateFile',
-//     'deleteFile':  '/file/deleteFile',
-//     'getMaterial':  '/file/getMaterial',
-//     'addSubject':  '/subject/addSubject',
-//     'getSubject':  '/subject/getSubject',
-//     'deleteSubject':  '/subject/deleteSubject',
-//     'createAnimation':  '/animation/createAnimation',
-//     'getAnimations':  '/animation/getAnimations',
-//     'login':  '/login'
-// }
 export default {
     INTERFACE
 }

@@ -1,6 +1,7 @@
 const state = {
     footer: true,
-    isLogin:true
+    isLogin:false,
+    isSideOpen:false
 }
 
 export default state;
