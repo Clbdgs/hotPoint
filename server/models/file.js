@@ -5,8 +5,7 @@ const send = require('koa-send');
 const xlsx = require('node-xlsx');
 const TranslateXlsx = require('./translateXlsx');
 const service = require('../utils/util');
-const { FILE } = require('dns');
-const domain = 'http://clbdgs.xyz'
+const domain = ''
 
 
 class File{

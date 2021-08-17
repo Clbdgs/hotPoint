@@ -25,7 +25,7 @@ class MysqlDb{
         const connection = await mysql.createConnection({
             host: 'localhost', 	 	
             user: 'root',
-            password : '**2Rgkjmigvi',
+            password : '',
             database: 'hotpoint'
         });
         const [rows, fields] = await connection.execute('SELECT * FROM topic')
@@ -38,7 +38,7 @@ async function setupConnectionPool()  {
     let dbConfig ={
         host: 'localhost', 	 	
         user: 'root',
-        password : '**2Rgkjmig!v',
+        password : '',
         database: 'hotpoint'
     }
     // const dbConfig = MysqlDb.connectionParams();
