@@ -1,26 +1,7 @@
 <template>
-    <div class="home-page" :class="{'sidebar-open':getSideOpen}">
+    <div class="home-page" :class="{'sidebar-open':sideOpen}">
         <div class="">
-            <div class="aside border-end">            
-                <ul>
-                    <template v-for="catalogue in catalogueList">
-                        <li :key=catalogue.id class="mb-1">
-                            <div class="d-inline-flex align-items-center" @click="handleCollapse(catalogue)">
-                                <i class="title" :title="catalogue.name" :class="{'show':catalogue.isHidden}"></i><span>{{catalogue.name}}</span>
-                            </div>
-                            <ul v-if="catalogue.isHidden">
-                                    <template v-for="sub in catalogue.children">
-                                    <li :key=sub.id>
-                                        <span class="sub-title" :class="{'active':sub.id==subActive}" :title="sub.name" @click="handleActive(sub)">  
-                                            {{sub.name}}
-                                        </span>
-                                    </li>
-                                </template>
-                            </ul>
-                        </li>
-                    </template>
-                </ul>
-            </div>
+            <left-side @changeSubIndex='changeSubIndex'></left-side>
             <div class="markdown-body content-wrapper  mt-4 ">
                 <div v-html="content"></div>
             </div>
@@ -28,73 +9,26 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+import leftSide from './leftSide.vue'
 export default {
     data(){
         return{
-            active:1,
-            subActive:0,
-            catalogueList:[],
-            leftMenu:[
-                {   
-                    id:1,
-                    title:"浏览器相关原理",
-                    isHidden:true,
-                    subContent:[
-                        { id:1.1,name:"渲染原理" },
-                        { id:1.2,name:"渲染原理" },
-                        { id:1.3,name:"渲染原理" },
-                        { id:1.4,name:"渲染原理" }
-                    ]
-                },
-                {   
-                    id:2,
-                    title:"前端三板斧HCJ",
-                    isHidden:false,
-                    subContent:[
-                        { id:2.1,name:"HTML常用布局"}
-                    ]
-                },
-                {   
-                    id:3,
-                    title:"js模块化发展历史",
-                    isHidden:false,
-                    subContent:[
-                        { id:3.1,name:"commonjs"}
-                    ]
-                },
-                {   
-                    id:4,
-                    title:"前端框架",
-                    isHidden:false,
-                    subContent:[
-                        { id:4.1,name:"vue"}
-                    ]
-                },
-                {   
-                    id:5,
-                    title:"前端工具",
-                    isHidden:false,
-                    subContent:[
-                        { id:5.1,name:"webpack" },
-                        { id:5.2,name:"webpack-chain"}
-                    ]
-                }
-            ],
             files:[],
             content:'',
             isSideOpen:false
         }
     },
+    components:{
+        [leftSide.name]:leftSide
+    },
     created(){
         this.getFiles()
-        this.getCatalogueList()
     },
     computed:{
-        getSideOpen(){
-            return this.$store.state.isSideOpen
-        }
-    },
-    mounted(){
+        ...mapState({
+            sideOpen: (state) => state.isSideOpen,
+        }),
     },
     methods:{
          getFiles(){
@@ -106,35 +40,9 @@ export default {
                 }
             })
         },
-        getCatalogueList(){
-            this.$http.get(this.INTERFACE.getCatalogueList).then(res=>{
-                if(res.data.code==200){
-                    if(res.data.data){ 
-                        let catalogueList = []
-                        res.data.data.forEach(item=>{
-                            if(!item.parentId){
-                                item.children = []
-                                catalogueList.push(item)
-                            }else{
-                                let obj = catalogueList.find(el=>el.id===item.parentId)
-                                obj.children.push(item)
-                            }
-                        })
-                        this.catalogueList = catalogueList
-                    }
-                }
-            })
-        },
-        handleCollapse(menu){
-            menu.isHidden = ! menu.isHidden
-        },
-        handleActive(sub){
-            let obj = this.files.find(el=>el.catalogueId ===sub.id)
+        changeSubIndex(id){
+            let obj = this.files.find(el=>el.catalogueId ===id)
             this.content = obj.render
-            this.subActive = sub.catalogueId
-        }, 
-        handleSelectTopic(name){
-            this.topicActive = name
         }
     }
 }
@@ -145,37 +53,13 @@ export default {
   @return ($rem*16 + $px)+px
 }
 @media (max-width:700px) {
-    .home-page .aside {
-        top: 3.6rem;
-        transform: translateX(-100%);
-        transition: transform .2s ease;
-    }
-    .home-page  .content-wrapper{
+    .home-page .content-wrapper{
         left:0;
-    }
-}
-.sidebar-open .aside{
-    top: 3.6rem;
-    transform: translateX(0);
-}
-.aside{
-    position: fixed;
-    top: remTpx(1.4,40);
-    bottom: 0;
-    width:14rem;
-    padding:1.5rem 0;
-    padding-left:2rem;
-    box-sizing: border-box;
-    background-color: #fff;
-    z-index: 1;
-    >ul{
-        margin-left:-2rem;
     }
 }
 .content-wrapper{ 
     padding-right:3rem;
     padding-left:2rem;
-    width:100%;
     left:14rem;
     position: absolute;
     top:remTpx(1.4,40);

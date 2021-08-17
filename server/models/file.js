@@ -5,7 +5,7 @@ const send = require('koa-send');
 // const xlsx = require('node-xlsx');
 const TranslateXlsx = require('./translateXlsx');
 const service = require('../utils/util');
-
+const domain = 'clbdgs.xyz'
 
 class File{
     static async getZY(ctx){

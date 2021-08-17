@@ -7,10 +7,20 @@
     "client": "cd client && npm run dev",
     "server": "cd server && npm run dev",
     "build": "cd client && npm run build",
+    "dev":"npm run client && npm run server",
     "install:all": "npm run install:client && npm run install:server",
     "install:client": "cd client && npm install && npm rebuild node-sass",
     "install:server": "cd server && npm install"
   },
+  "engines": {
+    "node": ">= 8.0.0",
+    "npm": ">= 5.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Clbdgs/hotPoint.git"

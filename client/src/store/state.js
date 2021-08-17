@@ -1,7 +1,10 @@
 const state = {
-    footer: true,
-    isLogin:false,
-    isSideOpen:false
+    isSideOpen:false,
+    auth:{
+        isLogin:false,
+        user:null
+    },
+    footer: true
 }
 
 export default state;
