@@ -1,6 +1,6 @@
 /* eslint no-shadow:off *//* app is already declared in the upper scope */
 const Koa = require('koa');
-const router = require('./server/routes')
+const router = require('./routes')
 const  fs = require('fs');
 let session = require('koa-session');
 const  cors = require('koa-cors');
@@ -33,7 +33,7 @@ app.use(async (ctx, next) => {
     await next();
 });
   
-app.use(serve(__dirname +"/static"));
+app.use(serve(__dirname +"../static"));
 
 app.use(cors());
 app.use(koaBody({

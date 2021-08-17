@@ -1,0 +1,51 @@
+{
+  "name": "hotpoint-client",
+  "version": "1.0.0",
+  "description": "hopoint ui",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "build1": "wepback -config webpack.pro.config.js",
+    "inspect": "vue-cli-service inspect > input.js"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "axios": "^0.21.1",
+    "bootstrap": "^5.0.0-beta3",
+    "bootstrap-icons": "^1.4.1",
+    "core-js": "^3.6.5",
+    "mavon-editor": "^2.9.1",
+    "node-sass": "^4.14.1",
+    "node-ses": "^3.0.3",
+    "node-xlsx": "^0.16.1",
+    "sass-loader": "^8.0.0",
+    "vue": "^2.6.11",
+    "vue-axios": "^3.2.4",
+    "vue-router": "^3.5.1",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.0",
+    "@vue/cli-plugin-eslint": "^4.5.0",
+    "@vue/cli-service": "^4.5.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Clbdgs/hotPoint.git"
+  },
+  "keywords": [
+    "vue"
+  ],
+  "author": "clbdgs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Clbdgs/hotPoint/issues"
+  },
+  "homepage": "https://github.com/Clbdgs/hotPoint#readme"
+}

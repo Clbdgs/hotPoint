@@ -2,10 +2,9 @@ const Db = require('../lib/mysqldb.js')
 const fs = require('fs')
 const path = require('path')
 const send = require('koa-send');
-const xlsx = require('node-xlsx');
+// const xlsx = require('node-xlsx');
 const TranslateXlsx = require('./translateXlsx');
 const service = require('../utils/util');
-const domain = ''
 
 
 class File{

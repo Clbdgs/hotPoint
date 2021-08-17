@@ -1,0 +1,40 @@
+{
+  "name": "hotpoint-serve",
+  "version": "1.0.0",
+  "description": "hotpoint serve",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "dev": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-cors": "0.0.16",
+    "koa-json2xlsx": "^1.0.3",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^10.0.0",
+    "koa-send": "^5.0.1",
+    "koa-session": "^6.2.0",
+    "koa-static": "^5.0.0",
+    "moment": "^2.29.1",
+    "mysql2": "^2.2.5"
+  },
+  "keywords": [
+    "\"eslintConfig\":",
+    "{"
+  ],
+  "author": "\"root\": true,",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Clbdgs/hotPoint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Clbdgs/hotPoint/issues"
+  },
+  "homepage": "https://github.com/Clbdgs/hotPoint#readme"
+}
