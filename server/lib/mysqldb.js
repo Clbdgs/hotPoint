@@ -29,7 +29,7 @@ async function setupConnectionPool()  {
         host: 'localhost', 	 	
         user: 'root',
         password : '',
-        database: ''
+        database: 'hotpoint'
     }
     connectionPool = mysql.createPool(dbConfig);
 

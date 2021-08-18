@@ -8,8 +8,8 @@ const koaBody  = require('koa-body');
 const logger = require('koa-logger');
 const Moment = require("moment");
 const serve  = require('koa-static');
+const compression = require('koa-compress')
 const app = new Koa();
-
 app.keys = ['some secret hurr'];
 const CONFIG = {
    key: 'koa:sess',   //cookie key (default is koa:sess)
@@ -23,6 +23,16 @@ const CONFIG = {
 
 app.use(session(CONFIG, app));
 
+app.use(compression({threshold: 2048}))
+
+function shouldCompress (req, res) {
+  if (req.headers['x-no-compression']) {
+    // 这里就过滤掉了请求头包含'x-no-compression'
+    return false
+  }
+
+  return compression.filter(req, res)
+}
 app.use(logger((str, args) => {
     // redirect koa logger to other output pipe
     // default is process.stdout(by console.log function)node 
@@ -39,7 +49,7 @@ app.use(cors());
 app.use(koaBody({
     multipart: true, 
     formidable: {
-        maxFieldsSize: 2 * 1024 * 1024, // 最大文件为2兆
+        maxFieldsSize: 2 * 1024 * 1024, // 最大文件为2兆m
         multipart: true // 是否支持 multipart-formdate 的表单
     }   
 }));

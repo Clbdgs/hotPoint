@@ -7,7 +7,7 @@
     "client": "cd client && npm run dev",
     "server": "cd server && npm run dev",
     "build": "cd client && npm run build",
-    "dev":"npm run client && npm run server",
+    "dev": "npm run client && npm run server",
     "install:all": "npm run install:client && npm run install:server",
     "install:client": "cd client && npm install && npm rebuild node-sass",
     "install:server": "cd server && npm install"
