@@ -40,13 +40,13 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 import { toggleSideOpen } from "@/store/types";
 export default {
   data() {
-    return {};
+    return {
+    };
   },
-  created() {
+  created() { 
   },
   mounted() {
     console.log(
@@ -54,9 +54,6 @@ export default {
     );
   },
   computed: {
-    ...mapState({
-        sideOpen: (state) => state.isSideOpen,
-    }),
     getFooter() {
       return this.$store.state.footer;
     },
@@ -64,7 +61,7 @@ export default {
   methods: {
     handleToggleMenu() {
       let open = false
-      if(this.sideOpen){
+      if(this.$store.state.isSideOpen){
         open = false
       }else{
         open = true

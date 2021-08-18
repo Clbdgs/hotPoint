@@ -323,11 +323,13 @@
   </div>
 </template>
 <script>
+import { mavonEditor } from 'mavon-editor'
 import editConfig from "./editMavonConfig.js";
 import catalogueList from "./catalogueList.vue";
 export default {
   components: {
     catalogueList: catalogueList,
+    mavonEditor
   },
   data() {
     return {

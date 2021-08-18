@@ -8,8 +8,11 @@ const path = require('path');
 const config = {
     publicPath: process.env.NODE_ENV === 'development'? '/' : '/',
     outputDir: path.resolve(__dirname,'dist'),
+    assetsDir:'assets',
+    lintOnSave:true,//使用 `eslint-loader` 进行检查
+    productionSourceMap:false,//生产环境的 source map
     css:{
-        extract: false,
+        extract: true,
         sourceMap: false
     },
     devServer:{
@@ -28,6 +31,14 @@ const config = {
                 }
             }
         }
-    }
+    },
+    chainWebpack: config => {
+        config.plugin('html').tap(args=>{
+            args[0].title = '从来不打怪兽'
+            args[0].template = './index.html'
+            return args
+        })
+
+    },
 }
 module.exports = config

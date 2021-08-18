@@ -13,6 +13,7 @@
   "dependencies": {
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
+    "koa-compress": "^5.1.0",
     "koa-cors": "0.0.16",
     "koa-json2xlsx": "^1.0.3",
     "koa-logger": "^3.2.1",
