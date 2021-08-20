@@ -1,0 +1,7 @@
+CACHE MANIFEST
+#version v1.0.0
+CACHE:
+/logo.jpg
+logo.jpg
+NETWORK:
+*

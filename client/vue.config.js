@@ -12,7 +12,7 @@ const config = {
     lintOnSave:true,//使用 `eslint-loader` 进行检查
     productionSourceMap:false,//生产环境的 source map
     css:{
-        extract: true,
+        extract: false,
         sourceMap: false
     },
     devServer:{

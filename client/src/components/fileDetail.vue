@@ -1,16 +1,24 @@
 <template>
     <div class="knowled-contanier">
-        <div class="content-warpper">
-            <div class="" v-html="file.render"></div>
+        <div class="breadcrumb">
+            <ol>
+                <li>所在位置：</li>
+                <li class="location" @click="backToSubject"><a href="javascript:void()">资料</a>></li>
+                <li>{{file.name}}</li>
+            </ol>
         </div>
-        <div class="aside-right">
-            <ul class="material-list">
-                <template v-for="material,index in materials">
-                    <li :key="index" @click="handleDownLoad(material.url)">
-                        <span><a href="javascript:void()">{{material.name}}</a></span>
-                    </li>
-                </template>
-            </ul>
+        <div class="content-warpper">
+            <div class="render" v-html="file.render"></div>
+            <div class="aside-right">
+                <h3>下载</h3>
+                <ul class="material-list">
+                    <template v-for="material,index in materials">
+                        <li :key="index" @click="handleDownLoad(material.url)">
+                            <span><a href="javascript:void()">{{material.name}}</a></span>
+                        </li>
+                    </template>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -19,48 +27,38 @@
         data() {
             return {
                 activeIndex: 0,
-                Btns: [{
-                        name: "Overview",
-                        id: 0
-                    },
-                    // {
-                    //     name: "Review",
-                    //     id: 1
-                    // }
-                ],
                 file:{},
-                tables:[],
                 materials:[]
             }
         },
         created() {
-            // this.getXlsx()
         },
         mounted(){
             this.$nextTick(()=>{
-                this.file = this.$route.params.file
-                this.getMaterial(this.$route.params.file.id)
+                let id = this.$route.query.id
+                this.getMaterial(id)
+                this.getFiles(id)
             })
         },
         methods: {
+            backToSubject(){
+                this.$router.push({name:'subject'})
+            },
             handleDownLoad(url){
                 window.open(url)
+            },
+            getFiles(id) {
+                let _this = this;
+                _this.$http.get(_this.INTERFACE.getFile+ '?id='+ id).then((res) => {
+                    if(res.data.code ==200){
+                        _this.file = res.data.data[0];
+                    }
+                });
             },
             getMaterial(id){
                 this.$http.get(this.INTERFACE.getMaterial + '?id='+ id).then(res => {
                     this.materials = res.data.data
                 })
-            },
-            handleOpenTemplate() {
-                window.open(this.file.url)
-            },
-            getXlsx(){
-                this.$http.get('http://localhost:3000/file/getXlsx').then(res => {
-                    this.tables = res.data.data
-                })
-            },
-            handleSelectFocus(index){
-                this.activeIndex = parseInt(index)
             }
         }
     }
@@ -69,18 +67,64 @@
 @function remTpx($rem,$px) { 
   @return ($rem*16 + $px)+px
 }
+a{
+    color:#666;
+    &:hover{
+        color: #2878FF;
+        text-decoration: underline !important;
+    }
+}
+
 .knowled-contanier{
-    display: flex;
-    justify-content: flex-start;
-    padding-left:6rem;
-    max-height: calc(100vh - 66px);
-    padding-top:2rem;
+    background-color: #F2F5F9;
+    padding:2rem 6rem;
     overflow-y: auto;
+    position:absolute;
+    bottom:0;
+    top: remTpx(1.4,40);
+    width:100%;
+    .breadcrumb  {
+        margin-bottom:0;
+        li{
+            float:left;
+            list-style: none;
+        }
+        .location{
+            margin-right:4px;
+        }
+    }
     .content-warpper{
-        width:80%;
+        display: flex;
+        justify-content: flex-start;
+        margin-right: 1rem;
+        .render{
+            background-color: #fff;
+            width:80%;
+            height:100%;
+            padding:2rem 3rem;
+            margin-right: 1rem;
+            p {
+                word-break: break-all;
+            }
+        }
     }
     .aside-right{
+        float:right;
+        background-color: #fff;
         padding:10px 20px;
+        height:5rem;
+        li{
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        h3{ 
+            padding-left: 1rem;
+            font-size: 16px;
+            border-left: 4px solid #458DEC;
+            font-weight: 600;
+            color: #000;
+        }
     }
     .material-list{
         padding:0;

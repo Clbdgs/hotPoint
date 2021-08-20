@@ -1,5 +1,5 @@
 <template>
-    <div class="home-page" :class="{'sidebar-open':sideOpen}">
+    <div class="home-page">
         <div class="">
             <left-side @changeSubIndex='changeSubIndex'></left-side>
             <div class="markdown-body content-wrapper  mt-4 ">
@@ -9,7 +9,6 @@
     </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 import leftSide from './leftSide.vue'
 export default {
     data(){
@@ -24,11 +23,6 @@ export default {
     },
     created(){
         this.getFiles()
-    },
-    computed:{
-        ...mapState({
-            sideOpen: (state) => state.isSideOpen,
-        }),
     },
     methods:{
          getFiles(){

@@ -7,9 +7,10 @@
             class="ms-0"
             autocomplete="off"
             autofocus
+            v-model="searchVaue"
             placeholder="Search"
           />
-          <i class="icon-search">
+          <i class="icon-search" @click="handleSearchKnowled">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
@@ -40,16 +41,16 @@
             </template>
           </ul>
         </div>
-        <div class="col-8 row">
+        <div class="material-contanier col-8 row">
           <template v-for="(file, index) in filterFileData">
             <div
               v-if="file.status == '1'"
-              class="mb-4 col-sm-4"
+              class="mb-4 col-12 col-sm-12 col-md-6 col-lg-4"
               :key="file.index"
             >
               <div
                 ref="cardRef"
-                class="card text-start w-100 h-100"
+                class="card text-start"
                 @mouseenter="handleCardShadow(index)"
                 @mouseleave="handleCardShadow(index, false)"
               >
@@ -77,6 +78,8 @@ export default {
       subjectIndex: 0,
       files: [],
       subjects: [],
+      searchVaue:'',
+      searchBox:[]
     };
   },
   created() {
@@ -86,9 +89,15 @@ export default {
   computed: {
     filterFileData() {
       return this.files.filter((item) => {
+        if(this.searchVaue){
+          return item.name.indexOf(this.searchVaue)!=-1 && item.subjectId == this.subjectIndex
+        }
         return item.subjectId == this.subjectIndex;
       });
     },
+    sideOpen(){
+      return this.$store.state.isSideOpen
+    }
   },
   methods: {
     handleSelectSubject(id) {
@@ -111,8 +120,8 @@ export default {
     handleToDetail(file) {
       this.$router.push({
         name: "fileDetail",
-        params: {
-          file: file,
+        query: {
+          id: file.id,
         },
       });
     },
@@ -133,7 +142,21 @@ export default {
   margin: 0;
   padding: 0;
 }
-
+@media (max-width:768px) {
+    .material-contanier{
+      margin: 0 auto;
+    }
+}
+@media (max-width:490px) {
+    .search-wrapper input {
+      width:200px !important;
+    }
+}
+@media (max-width:700px) {
+    .resource-nav {
+      display:none;
+    }
+}
 .search {
   background-color: #fff;
   height: 48px;
@@ -145,7 +168,7 @@ export default {
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
       border: 1px solid #d4d4d5;
-      width: 500px;
+      width: 25rem;
       height: 42px;
       box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
       outline: none;
@@ -157,6 +180,7 @@ export default {
       width: 42px;
       line-height: 42px;
       text-align: center;
+      cursor: pointer;
     }
   }
 }
@@ -187,7 +211,9 @@ export default {
     height: 50px;
   }
   .card {
-    width: 220px;
+    width: 18rem;
+    padding:1rem 1rem;
+    margin-right: 20px;
   }
   .card-title {
     font-size: 16px;
@@ -199,6 +225,9 @@ export default {
     font-size: 12px;
     p {
       height: 60px;
+    }
+    .btn{
+      padding:.375rem .75rem ;
     }
   }
 }

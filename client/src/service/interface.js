@@ -18,6 +18,7 @@ const  INTERFACE = {
     'deleteCatalogue':getEnvUrl() +  '/catalogue/delete',
     'addFile':getEnvUrl() +  '/file/addFile',
     'getFiles': getEnvUrl() +  '/file/getFiles',
+    'getFile': getEnvUrl() +  '/file/getFile',
     'updateFile':getEnvUrl() +  '/file/updateFile',
     'uploadImg':getEnvUrl() +  '/file/addImg',
     'deleteFile': getEnvUrl() +  '/file/deleteFile',

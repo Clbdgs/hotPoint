@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <header class="header-container d-inline-flex align-items-center clearfix">
-      <a class="navbar-brand" href="javascript:void()"
-        ><router-link to="/"><img src="http://clbdgs.xyz/static/image/tx.775217c9.jpg" alt=""></router-link></a
-      >
+      <a class="navbar-brand" href="javascript:void()">
+        <router-link to="/"><img src="http://clbdgs.xyz/static/image/tx.775217c9.jpg" alt=""></router-link>
+        <!-- <router-link to="/"><img src="../logo.jpg" alt=""></router-link> -->
+      </a>
       <nav class="nav-list navbar-close">
         <div class="">
           <router-link to="/subject"> 资料</router-link>
@@ -149,8 +150,6 @@ ul li {
   a {
     color: #fff;
   }
-}
-.introduce-info {
 }
 .container-custom {
   margin-top: remTpx(1.4, 40);

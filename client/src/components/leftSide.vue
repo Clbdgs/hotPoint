@@ -1,6 +1,7 @@
 <template>
-  <div class="aside border-end">
+  <div class="aside border-end" :class="{'sidebar-open':sideOpen}">
     <ul>
+        <li v-show="sideOpen"><router-link to="/subject"> 资料</router-link></li>
       <template v-for="catalogue in catalogueList">
         <li :key="catalogue.id" class="mb-1">
           <div
@@ -34,6 +35,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
     name: "left-side",
     data(){
@@ -45,6 +47,11 @@ export default {
     },
     created(){
         this.getCatalogueList()
+    },
+    computed:{
+        ...mapState({
+            sideOpen: (state) => state.isSideOpen,
+        }),
     },
     methods:{  
         getCatalogueList(){
@@ -90,7 +97,7 @@ export default {
         left:0;
     }
 }
-.sidebar-open .aside{
+.sidebar-open {
     top: 3.6rem;
     transform: translateX(0);
 }

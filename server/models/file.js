@@ -110,6 +110,15 @@ class File{
             message: '获取成功'
         }
     }
+    static async getFile(ctx){
+        let sql = `Select * from FILE where id='${ctx.request.query.id}'`
+        const [ files ] = await Db.execute(sql);
+        ctx.response.body ={
+            data : files,
+            code: 200,
+            message: '获取成功'
+        }
+    }
     static async getMaterial(ctx){
         let sql = `Select * from MATERIAL where fileId='${ctx.request.query.id}'`
         const [ materials ] = await Db.execute(sql);
