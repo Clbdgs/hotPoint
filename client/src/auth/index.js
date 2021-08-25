@@ -14,7 +14,7 @@ const auth = {
 
  
 async function authorizeUser (fromData) {
-  const authUrl = 'http://localhost:3000/v1/login'
+  const authUrl = 'http://clbdgs.xyz/v1/login'
   try {
     let resp = await axios.post(authUrl,fromData)
     return resp.data.data[0]
