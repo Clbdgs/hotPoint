@@ -66,6 +66,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { logIn } from "@/store/types";
+import { toggleSideOpen } from "@/store/types";
 export default {
   data() {
     return {
@@ -73,6 +74,9 @@ export default {
       emailValue: "",
       password: "",
     };
+  },
+  created(){
+    this.$store.commit(toggleSideOpen, false)
   },
   computed: {
     ...mapState({
@@ -105,7 +109,7 @@ export default {
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  z-index: 99999999;
+  z-index: 999;
   height: 300px;
   width: 300px;
   padding: 50px 50px;

@@ -1,7 +1,8 @@
 <template>
-  <div class="aside border-end" :class="{'sidebar-open':sideOpen}">
-    <ul>
-        <li v-show="sideOpen"><router-link to="/subject"> 资料</router-link></li>
+  <div v-if="sideOpen" class="aside border-end" :class="{'sidebar-open':sideOpen}">
+    <ul >
+        <li class="route-show"><router-link to="/subject"> 资料</router-link></li>
+        <li class="route-show"><router-link to="/manage"> 管理</router-link></li>
       <template v-for="catalogue in catalogueList">
         <li :key="catalogue.id" class="mb-1">
           <div
@@ -36,6 +37,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { toggleSideOpen,changeSubIndex } from "@/store/types";
 export default {
     name: "left-side",
     data(){
@@ -53,7 +55,18 @@ export default {
             sideOpen: (state) => state.isSideOpen,
         }),
     },
-    methods:{  
+    methods:{
+        isPc(){
+            let userAgentInfo = navigator.userAgent
+            let agents = new Array('Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod');
+                        
+            for (var v = 0; v < agents.length; v++) {
+                if (userAgentInfo.indexOf(agents[v]) > 0) { 
+                    return false
+                }
+            }
+            return true
+        },
         getCatalogueList(){
             this.$http.get(this.INTERFACE.getCatalogueList).then(res=>{
                 if(res.data.code==200){
@@ -74,12 +87,18 @@ export default {
             })
         },
         handleActive(sub){
+            if(!this.isPc()){
+                this.$store.commit(toggleSideOpen, false)
+                if(this.$route.path!=='/'){
+                    this.$router.push({path:'/'})
+                }
+            }
             this.subActive = sub.catalogueId
-            this.$emit('changeSubIndex',sub.id)
+            this.$store.commit(changeSubIndex, sub.id)
         }, 
         handleCollapse(menu){
             menu.isHidden = ! menu.isHidden
-        },
+        }
     }
 };
 </script>
@@ -93,9 +112,15 @@ export default {
         transform: translateX(-100%);
         transition: transform .2s ease;
     }
-    .home-page  .content-wrapper{
+    .home-page .content-wrapper{
         left:0;
     }
+    .aside .route-show{
+        display:block;
+    }
+}
+.route-show{
+    display:none;
 }
 .sidebar-open {
     top: 3.6rem;
@@ -103,14 +128,14 @@ export default {
 }
 .aside{
     position: fixed;
-    top: remTpx(1.4,40);
+    top: remTpx(2,40);
     bottom: 0;
     width:14rem;
     padding:1.5rem 0;
     padding-left:2rem;
     box-sizing: border-box;
     background-color: #fff;
-    z-index: 1;
+    z-index: 1000;
     >ul{
         margin-left:-2rem;
     }

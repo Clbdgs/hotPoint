@@ -324,6 +324,7 @@
 </template>
 <script>
 import { mavonEditor } from 'mavon-editor'
+import { toggleSideOpen } from "@/store/types";
 import editConfig from "./editMavonConfig.js";
 import catalogueList from "./catalogueList.vue";
 export default {
@@ -384,6 +385,7 @@ export default {
     if (!window.localStorage.getItem('user')) {
       this.$router.push({ name: "login" });
     }
+    this.$store.commit(toggleSideOpen, false)
   },
   mounted() {
     this.getFiles();

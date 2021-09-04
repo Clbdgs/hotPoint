@@ -12,6 +12,8 @@ export const addUser = 'addUser'
 export const addLocalStorage = 'addLocalStorage'
 export const toggleLoginStatus =  'toggleLoginStatus'
 export const toggleSideOpen = 'toggleSideOpen'
+export const changeSubIndex = 'changeSubIndex'
+
 // INTERNAL-MUTATIONS
 const types = {
 // GETTERS
@@ -20,6 +22,7 @@ const types = {
   addUser,
   toggleLoginStatus,
   toggleSideOpen,
+  changeSubIndex,
 // ACTIONS
   logIn,
   logOut,

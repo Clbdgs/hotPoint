@@ -2,7 +2,9 @@
   <div id="app">
     <header class="header-container d-inline-flex align-items-center clearfix">
       <a class="navbar-brand" href="javascript:void()">
-        <router-link to="/"><img src="http://clbdgs.xyz/static/image/tx.775217c9.jpg" alt=""></router-link>
+        <router-link to="/"
+          ><img class="kavada" src="http://clbdgs.xyz/static/image/tx.775217c9.jpg" alt=""
+        /></router-link>
         <!-- <router-link to="/"><img src="../logo.jpg" alt=""></router-link> -->
       </a>
       <nav class="nav-list navbar-close">
@@ -35,6 +37,8 @@
     <main class="container-custom">
       <router-view></router-view>
     </main>
+    <dialog-modal :src="imgSrc" :isShow.sync="imgIshow"></dialog-modal>
+    <left-side></left-side>
     <!-- <footer class="foot-container">
       <p>粤ICP备2021086872号</p>
     </footer> -->
@@ -42,18 +46,29 @@
 </template>
 <script>
 import { toggleSideOpen } from "@/store/types";
+import leftSide from "./components/leftSide.vue";
+import dialogModal from "./components/dialog.vue";
 export default {
   data() {
     return {
+      imgSrc: "",
+      imgIshow: false,
     };
   },
-  created() { 
+  components: {
+    [leftSide.name]: leftSide,
+    [dialogModal.name]: dialogModal,
   },
-  mounted() {
-    console.log(
-      "前端：vue\n后端：koa2\n代理服务器：nginx\n目标进大厂，望大佬看到我v:clbdgs"
-    );
+  created() {
+    let that = this;
+    document.addEventListener("click", function (ev) {
+      if (ev.target.localName == "img" && ev.target.className!=='kavada') {
+        that.imgSrc = ev.target.currentSrc;
+        that.imgIshow = true;
+      }
+    });
   },
+  mounted() {},
   computed: {
     getFooter() {
       return this.$store.state.footer;
@@ -61,13 +76,13 @@ export default {
   },
   methods: {
     handleToggleMenu() {
-      let open = false
-      if(this.$store.state.isSideOpen){
-        open = false
-      }else{
-        open = true
+      let open = false;
+      if (this.$store.state.isSideOpen) {
+        open = false;
+      } else {
+        open = true;
       }
-      this.$store.commit(toggleSideOpen, open)
+      this.$store.commit(toggleSideOpen, open);
     },
     getVertifyCode() {
       this.$http.post("http://localhost:3000/sendEmail").then((res) => {
@@ -111,10 +126,10 @@ ul li {
     text-decoration: none;
   }
 }
-.navbar-brand{
-  img{
-    width:40px;
-    height:40px;
+.navbar-brand {
+  img {
+    width: 40px;
+    height: 40px;
     border-radius: 15px;
   }
 }

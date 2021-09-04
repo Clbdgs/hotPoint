@@ -10,7 +10,7 @@
             v-model="searchVaue"
             placeholder="Search"
           />
-          <i class="icon-search" @click="handleSearchKnowled">
+          <i class="icon-search">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
@@ -34,6 +34,7 @@
               <li
                 :key="index"
                 :class="{ active: sub.id == subjectIndex }"
+                :title="sub.name"
                 @click="handleSelectSubject(sub.id)"
               >
                 {{ sub.name }}
@@ -41,7 +42,7 @@
             </template>
           </ul>
         </div>
-        <div class="material-contanier col-8 row">
+        <div class="material-contanier col-8 row" >
           <template v-for="(file, index) in filterFileData">
             <div
               v-if="file.status == '1'"
@@ -51,8 +52,6 @@
               <div
                 ref="cardRef"
                 class="card text-start"
-                @mouseenter="handleCardShadow(index)"
-                @mouseleave="handleCardShadow(index, false)"
               >
                 <div class="card-body">
                   <h5 class="card-title fw-bold">{{ file.name }}</h5>
@@ -72,6 +71,7 @@
   </div>
 </template>
 <script>
+import { toggleSideOpen } from "@/store/types";
 export default {
   data() {
     return {
@@ -85,6 +85,7 @@ export default {
   created() {
     this.getFiles();
     this.getSubjects();
+    this.$store.commit(toggleSideOpen, false)
   },
   computed: {
     filterFileData() {
@@ -138,6 +139,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (max-width:700px) {
+    .resource-nav ul li{
+      float:left;
+      margin-right:10px !important;
+    }
+    .resource-nav{
+      margin-bottom:20px;
+    }
+}
 * {
   margin: 0;
   padding: 0;
@@ -152,11 +162,7 @@ export default {
       width:200px !important;
     }
 }
-@media (max-width:700px) {
-    .resource-nav {
-      display:none;
-    }
-}
+
 .search {
   background-color: #fff;
   height: 48px;
@@ -198,8 +204,12 @@ export default {
         margin-bottom: 4px;
         padding-left: 10px;
         cursor: pointer;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
         &:hover,
         &.active {
+          margin-right:10px;  
           color: royalblue;
           margin-left: -2px;
           border-left: 2px solid blue;

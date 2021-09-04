@@ -10,7 +10,7 @@ const config = {
     outputDir: path.resolve(__dirname,'dist'),
     assetsDir:'assets',
     lintOnSave:true,//使用 `eslint-loader` 进行检查
-    productionSourceMap:false,//生产环境的 source map
+    productionSourceMap:true,//生产环境的 source map
     css:{
         extract: false,
         sourceMap: false

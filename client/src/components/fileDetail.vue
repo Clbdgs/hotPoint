@@ -64,6 +64,27 @@
     }
 </script>
 <style lang="scss" scoped>
+@media (max-width:700px) {
+    .breadcrumb{
+        display:none
+    }
+    .knowled-contanier{
+        padding:2rem 0rem !important;
+    }
+    .content-warpper{
+        display:flex;
+        flex-direction: column-reverse;
+    }
+    .render{
+        width:100% !important;
+        margin-right:0px;
+        margin-top:20px;
+        overflow-x: hidden;
+        p{
+            word-wrap:break-word
+        }
+    }
+}
 @function remTpx($rem,$px) { 
   @return ($rem*16 + $px)+px
 }
@@ -97,10 +118,11 @@ a{
         display: flex;
         justify-content: flex-start;
         margin-right: 1rem;
+        margin-left: 1rem;
         .render{
             background-color: #fff;
             width:80%;
-            height:100%;
+            min-height: 30rem;
             padding:2rem 3rem;
             margin-right: 1rem;
             p {
